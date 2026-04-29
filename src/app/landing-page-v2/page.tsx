@@ -988,8 +988,8 @@ function Outcomes() {
             Ancient craft. <span className="text-[var(--color-accent)]">New speed.</span>
           </h2>
           <p className="font-body mt-[18px] text-[17px] leading-[1.55] text-muted-foreground">
-            We've always found the right problem, built the right system, and made sure it sticks.
-            We're just faster now.
+            We&apos;ve always found the right problem, built the right system, and made sure it sticks.
+            We&apos;re just faster now.
           </p>
         </div>
 
