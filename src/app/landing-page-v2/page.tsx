@@ -329,7 +329,7 @@ function SplitShowcase() {
       className="grid grid-cols-1 gap-[18px] lg:grid-cols-[1fr_1.25fr]"
     >
       <div
-        className="magic-border relative min-h-[480px] rounded-[18px] p-7"
+        className="relative min-h-[480px] overflow-hidden rounded-[18px] border border-border p-7"
         style={{
           background:
             "radial-gradient(120% 80% at 20% 0%, color-mix(in oklch, var(--color-accent) 5%, oklch(3.5% 0.008 96)) 0%, oklch(3.5% 0.008 96) 70%)",
@@ -344,7 +344,7 @@ function SplitShowcase() {
       </div>
 
       <div
-        className="magic-border relative min-h-[480px] rounded-[18px] p-7 shadow-[0_0_0_1px_color-mix(in_oklch,var(--color-accent)_18%,transparent),0_30px_80px_rgba(229,199,0,0.10)]"
+        className="relative min-h-[480px] overflow-hidden rounded-[18px] border border-[color-mix(in_oklch,var(--color-accent)_28%,var(--color-border))] p-7 shadow-[0_0_0_1px_color-mix(in_oklch,var(--color-accent)_18%,transparent),0_30px_80px_rgba(229,199,0,0.10)]"
         style={{
           background:
             "radial-gradient(120% 80% at 30% 0%, color-mix(in oklch, var(--color-accent) 11%, oklch(10.5% 0.016 96)) 0%, oklch(8.5% 0.012 96) 70%)",
@@ -1269,7 +1269,7 @@ function FinalCTA() {
         whileInView={{ opacity: 1, scale: 1, y: 0 }}
         viewport={{ once: false, amount: 0.1, margin: "-100px" }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="magic-border relative mx-auto max-w-7xl rounded-3xl px-8 py-[clamp(56px,7vw,96px)] text-center"
+        className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-[color-mix(in_oklch,var(--color-accent)_24%,var(--color-border))] px-8 py-[clamp(56px,7vw,96px)] text-center"
         style={{
           background:
             "radial-gradient(90% 70% at 50% 0%, color-mix(in oklch, var(--color-accent) 12%, var(--color-bg-900)) 0%, var(--color-bg-900) 65%)",
@@ -1346,7 +1346,6 @@ export default function LandingPageV2() {
         <Hero />
         <IntegrationsRow />
         <FeaturesSection />
-        <Outcomes />
         <DataToWorkSection />
         <FinalCTA />
       </main>

@@ -13,7 +13,7 @@ const LOGOS = [
 ];
 
 const card =
-  "magic-border relative overflow-hidden rounded-[18px] bg-[oklch(8.5%_0.012_96)] shadow-[0_1px_2px_rgba(0,0,0,0.5)]";
+  "relative overflow-hidden rounded-[18px] bg-[oklch(8.5%_0.012_96)] shadow-[0_1px_2px_rgba(0,0,0,0.5)]";
 
 const accentBorder =
   "border border-[color-mix(in_oklch,var(--color-accent)_22%,oklch(21%_0.02_96))]";
