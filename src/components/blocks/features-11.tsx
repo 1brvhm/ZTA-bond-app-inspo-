@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import { Globe } from "lucide-react";
 
 const LOGOS = [
@@ -10,7 +13,7 @@ const LOGOS = [
 ];
 
 const card =
-  "relative overflow-hidden rounded-[18px] bg-[oklch(8.5%_0.012_96)] shadow-[0_1px_2px_rgba(0,0,0,0.5)]";
+  "magic-border relative overflow-hidden rounded-[18px] bg-[oklch(8.5%_0.012_96)] shadow-[0_1px_2px_rgba(0,0,0,0.5)]";
 
 const accentBorder =
   "border border-[color-mix(in_oklch,var(--color-accent)_22%,oklch(21%_0.02_96))]";
@@ -32,7 +35,11 @@ export function Features() {
         <div className="mx-auto grid gap-3 sm:grid-cols-5">
 
           {/* ── Card 1: Mail screenshot ── */}
-          <div className={`${card} ${accentBorder} sm:col-span-3`}>
+          <motion.div
+            whileHover={{ y: -8 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className={`${card} ${accentBorder} sm:col-span-3`}
+          >
             <div className="p-7 md:p-8">
               <Eyebrow>Morning brief</Eyebrow>
               <h3
@@ -68,10 +75,14 @@ export function Features() {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* ── Card 2: Calendar screenshot ── */}
-          <div className={`${card} ${mutedBorder} sm:col-span-2`}>
+          <motion.div
+            whileHover={{ y: -8 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className={`${card} ${mutedBorder} sm:col-span-2`}
+          >
             <div className="p-7 md:p-8">
               <Eyebrow>Instant answers</Eyebrow>
               <h3
@@ -100,10 +111,14 @@ export function Features() {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* ── Card 3: Hotkey ── */}
-          <div className={`${card} ${mutedBorder} sm:col-span-2 flex flex-col items-center justify-center gap-10 p-8 md:p-12`}>
+          <motion.div
+            whileHover={{ y: -8 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className={`${card} ${mutedBorder} sm:col-span-2 flex flex-col items-center justify-center gap-10 p-8 md:p-12`}
+          >
             <div className="text-center">
               <Eyebrow>Hotkey access</Eyebrow>
               <h3
@@ -136,10 +151,14 @@ export function Features() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* ── Card 4: Logo grid ── */}
-          <div className={`${card} ${accentBorder} sm:col-span-3 p-7 md:p-10`}>
+          <motion.div
+            whileHover={{ y: -8 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className={`${card} ${accentBorder} sm:col-span-3 p-7 md:p-10`}
+          >
             <Eyebrow>Integrations</Eyebrow>
             <h3
               className="font-heading mt-3 text-[22px] leading-[1.15] tracking-[-0.02em]"
@@ -175,7 +194,7 @@ export function Features() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -259,7 +260,12 @@ function Hero() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-[clamp(16px,3vw,28px)] text-center">
+      <motion.div 
+        initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 mx-auto max-w-7xl px-[clamp(16px,3vw,28px)] text-center"
+      >
         <div className="mb-7 flex flex-wrap justify-center gap-2.5">
           <StatusBadge variant="live">
             <span className="size-1.5 rounded-full bg-[var(--color-accent)] shadow-[0_0_8px_var(--color-accent)]" />
@@ -304,7 +310,7 @@ function Hero() {
         <p className="font-mono mt-3.5 text-[11px] tracking-[0.16em] text-[var(--color-text-faint)] uppercase">
           $500 deposit · 100% refund if you aren&apos;t satisfied · 50 seats
         </p>
-      </div>
+      </motion.div>
 
       <div className="relative z-10 mx-auto mt-[72px] max-w-7xl px-[clamp(16px,3vw,32px)]">
         <SplitShowcase />
@@ -315,9 +321,15 @@ function Hero() {
 
 function SplitShowcase() {
   return (
-    <div className="grid grid-cols-1 gap-[18px] lg:grid-cols-[1fr_1.25fr]">
+    <motion.div 
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.1, margin: "-100px" }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className="grid grid-cols-1 gap-[18px] lg:grid-cols-[1fr_1.25fr]"
+    >
       <div
-        className="relative min-h-[480px] overflow-hidden rounded-[18px] border border-border p-7"
+        className="magic-border relative min-h-[480px] rounded-[18px] p-7"
         style={{
           background:
             "radial-gradient(120% 80% at 20% 0%, color-mix(in oklch, var(--color-accent) 5%, oklch(3.5% 0.008 96)) 0%, oklch(3.5% 0.008 96) 70%)",
@@ -332,7 +344,7 @@ function SplitShowcase() {
       </div>
 
       <div
-        className="relative min-h-[480px] overflow-hidden rounded-[18px] border border-[color-mix(in_oklch,var(--color-accent)_28%,var(--color-border))] p-7 shadow-[0_0_0_1px_color-mix(in_oklch,var(--color-accent)_18%,transparent),0_30px_80px_rgba(229,199,0,0.10)]"
+        className="magic-border relative min-h-[480px] rounded-[18px] p-7 shadow-[0_0_0_1px_color-mix(in_oklch,var(--color-accent)_18%,transparent),0_30px_80px_rgba(229,199,0,0.10)]"
         style={{
           background:
             "radial-gradient(120% 80% at 30% 0%, color-mix(in oklch, var(--color-accent) 11%, oklch(10.5% 0.016 96)) 0%, oklch(8.5% 0.012 96) 70%)",
@@ -347,7 +359,7 @@ function SplitShowcase() {
         </h3>
         <BriefDashboard />
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -397,14 +409,17 @@ function ChaosStack() {
   return (
     <div style={{ position: "relative", height: 460, marginTop: 8 }}>
       {items.map((it, i) => (
-        <div
+        <motion.div
           key={i}
+          initial={{ opacity: 0, scale: 0.9, y: 40, rotate: 0 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0, rotate: it.deg }}
+          viewport={{ once: false, amount: 0.1, margin: "-50px" }}
+          transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position: "absolute",
             top: it.top,
             left: `${it.left}%`,
             width: it.w,
-            transform: `rotate(${it.deg}deg)`,
             background: "oklch(12.5% 0.018 96)",
             border: "1px solid oklch(21% 0.02 96)",
             borderRadius: 10,
@@ -486,7 +501,7 @@ function ChaosStack() {
               }}
             />
           </div>
-        </div>
+        </motion.div>
       ))}
       <div
         aria-hidden
@@ -572,7 +587,11 @@ function ModuleCard({
   children: React.ReactNode;
 }) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.1 }}
+      transition={{ duration: 0.5 }}
       style={{
         background: "oklch(12.5% 0.018 96)",
         border: "1px solid oklch(21% 0.02 96)",
@@ -605,7 +624,7 @@ function ModuleCard({
         )}
       </div>
       {children}
-    </div>
+    </motion.div>
   );
 }
 
@@ -994,9 +1013,13 @@ function Outcomes() {
         </div>
 
         <div className="grid grid-cols-1 gap-[22px] lg:grid-cols-3">
-          {pillars.map((p) => (
-            <article
+          {pillars.map((p, i) => (
+            <motion.article
               key={p.title}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.1, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
               className="relative overflow-hidden rounded-[18px] border border-border bg-[var(--color-surface)] shadow-[0_1px_2px_rgba(0,0,0,0.34)] transition-[transform,border-color] duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-[color-mix(in_oklch,var(--color-accent)_30%,var(--color-border))]"
             >
               <CornerOrnaments accent inset={12} />
@@ -1078,7 +1101,7 @@ function Outcomes() {
                   {p.description}
                 </p>
               </div>
-            </article>
+            </motion.article>
           ))}
         </div>
       </div>
@@ -1168,7 +1191,13 @@ function DataToWorkSection() {
           </div>
 
           {/* Central chatbot card — absolutely centered over chips on md+ */}
-          <div className="mt-8 flex justify-center md:absolute md:inset-0 md:mt-0 md:items-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.1, margin: "-50px" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 flex justify-center md:absolute md:inset-0 md:mt-0 md:items-center"
+          >
             <div className="relative w-full max-w-[420px] rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.45),0_0_0_1px_var(--color-border)]">
               <div className="flex flex-col items-center">
                 <BrandOrb size={44} glow />
@@ -1221,7 +1250,7 @@ function DataToWorkSection() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -1235,8 +1264,12 @@ function DataToWorkSection() {
 function FinalCTA() {
   return (
     <section id="pricing" className="px-[clamp(16px,3vw,32px)] pb-24 pt-8">
-      <div
-        className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-[color-mix(in_oklch,var(--color-accent)_24%,var(--color-border))] px-8 py-[clamp(56px,7vw,96px)] text-center"
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 30 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+        viewport={{ once: false, amount: 0.1, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="magic-border relative mx-auto max-w-7xl rounded-3xl px-8 py-[clamp(56px,7vw,96px)] text-center"
         style={{
           background:
             "radial-gradient(90% 70% at 50% 0%, color-mix(in oklch, var(--color-accent) 12%, var(--color-bg-900)) 0%, var(--color-bg-900) 65%)",
@@ -1290,7 +1323,7 @@ function FinalCTA() {
             $500 deposit · 7 of 50 seats remaining · 100% refund
           </p>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -1300,8 +1333,14 @@ function FinalCTA() {
    ═══════════════════════════════════════════════════════════════ */
 
 export default function LandingPageV2() {
+  const { scrollYProgress } = useScroll();
+
   return (
     <div className="z2a-landing dark">
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-[var(--color-accent)] origin-left z-[100]"
+        style={{ scaleX: scrollYProgress }}
+      />
       <LandingNav />
       <main>
         <Hero />

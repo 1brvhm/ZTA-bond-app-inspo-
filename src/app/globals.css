@@ -128,23 +128,81 @@ section[id] {
 
 /* ─── Landing page motion ─── */
 @keyframes z2a-drift {
-  0%,
-  100% {
-    transform: translate(0, 0);
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
   }
-  50% {
-    transform: translate(18px, -24px);
+  33% {
+    transform: translate(30px, -40px) scale(1.05) rotate(5deg);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95) rotate(-5deg);
+  }
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
   }
 }
 
 @keyframes z2a-drift-slow {
-  0%,
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(-30px, 30px) scale(0.95) rotate(-3deg);
+  }
+  66% {
+    transform: translate(40px, -20px) scale(1.05) rotate(3deg);
+  }
   100% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) scale(1) rotate(0deg);
   }
-  50% {
-    transform: translate(-22px, 18px);
+}
+
+@keyframes border-spin {
+  100% {
+    transform: rotate(360deg);
   }
+}
+
+.magic-border {
+  position: relative;
+  overflow: hidden;
+  border: none !important;
+}
+
+.magic-border::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    transparent 40%,
+    var(--color-accent) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  animation: border-spin 6s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+.magic-border::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: inherit;
+  border-radius: inherit;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.magic-border > * {
+  position: relative;
+  z-index: 2;
 }
 
 @media (prefers-reduced-motion: reduce) {
