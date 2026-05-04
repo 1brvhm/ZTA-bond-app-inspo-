@@ -1,14 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { InfiniteSlider } from "@/components/ui/infinite-slider";
 import { ProgressiveBlur } from "@/components/ui/progressive-blur";
-import { BrandWordmark } from "@/components/BrandWordmark";
+import { BlurFade } from "@/components/ui/blur-fade";
 import { Features } from "@/components/blocks/features-11";
+import { AnimatedIntegrations } from "@/components/blocks/animated-integrations";
+import { EyebrowRule } from "@/components/ui/eyebrow-rule";
+import { BrandWordmark } from "@/components/BrandWordmark";
 
 const landingPrimaryBtn = cn(
   "h-auto rounded-[10px] px-6 py-3.5 text-[15px] font-semibold tracking-tight shadow-[0_0_0_1px_color-mix(in_oklch,var(--color-accent)_38%,transparent),0_0_40px_color-mix(in_oklch,var(--color-accent)_22%,transparent)] transition-transform duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-px",
@@ -96,33 +99,6 @@ function Eyebrow({
   );
 }
 
-function EyebrowRule({
-  children,
-  accent,
-  center,
-}: {
-  children: React.ReactNode;
-  accent?: boolean;
-  center?: boolean;
-}) {
-  const rule = "h-0.5 w-8 rounded-full bg-[var(--color-accent)] md:w-12";
-  return (
-    <div
-      className={cn("flex items-center gap-3.5", center ? "justify-center" : "justify-start")}
-    >
-      <span className={cn(rule, center && "w-8")} />
-      <span
-        className={cn(
-          "font-mono text-[11px] font-medium tracking-[0.18em] uppercase",
-          accent ? "text-[var(--color-accent)]" : "text-[var(--color-text-faint)]",
-        )}
-      >
-        {children}
-      </span>
-      {center && <span className="h-0.5 w-8 rounded-full bg-[var(--color-accent)]" />}
-    </div>
-  );
-}
 
 type CornerSvgProps = {
   tint: string;
@@ -364,68 +340,70 @@ function SplitShowcase() {
 }
 
 function ChaosStack() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [40, 0]);
+  const y3 = useTransform(scrollYProgress, [0, 1], [80, -60]);
+
   const items = [
     {
-      app: "Slack · #general",
-      img: "/images/chaos-slack.png",
-      objectPosition: "85% 78%",
-      deg: -5,
-      top: 8,
-      left: -2,
-      w: 220,
-      h: 96,
+      app: "GCal · 4 conflicts",
+      img: "/images/chaos-gcal.png",
+      objectPosition: "40% 60%",
+      top: 0,
+      w: 260,
+      h: 130,
+      z: 10,
+      y: y1,
     },
     {
       app: "Gmail · Inbox 99+",
       img: "/images/chaos-gmail.png",
       objectPosition: "25% 35%",
-      deg: 4,
-      top: 100,
-      left: 44,
-      w: 210,
-      h: 96,
+      top: 90,
+      w: 280,
+      h: 140,
+      z: 20,
+      y: y2,
     },
     {
-      app: "GCal · 4 conflicts",
-      img: "/images/chaos-gcal.png",
-      objectPosition: "40% 60%",
-      deg: -3,
-      top: 220,
-      left: 4,
-      w: 215,
-      h: 90,
-    },
-    {
-      app: "Linear · ECM-blocked",
-      img: "/images/chaos-linear.png",
-      objectPosition: "52% 40%",
-      deg: -4,
-      top: 332,
-      left: 46,
-      w: 220,
-      h: 88,
+      app: "Slack · #general",
+      img: "/images/chaos-slack.png",
+      objectPosition: "85% 78%",
+      top: 190,
+      w: 300,
+      h: 150,
+      z: 30,
+      y: y3,
     },
   ];
+
   return (
-    <div style={{ position: "relative", height: 460, marginTop: 8 }}>
+    <div ref={containerRef} style={{ position: "relative", height: 460, marginTop: 16, display: "flex", justifyContent: "center" }}>
       {items.map((it, i) => (
         <motion.div
           key={i}
-          initial={{ opacity: 0, scale: 0.9, y: 40, rotate: 0 }}
-          whileInView={{ opacity: 1, scale: 1, y: 0, rotate: it.deg }}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.1, margin: "-50px" }}
-          transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
           style={{
             position: "absolute",
             top: it.top,
-            left: `${it.left}%`,
             width: it.w,
+            zIndex: it.z,
+            y: it.y,
             background: "oklch(12.5% 0.018 96)",
             border: "1px solid oklch(21% 0.02 96)",
-            borderRadius: 10,
+            borderRadius: 12,
             overflow: "hidden",
             boxShadow:
-              "0 18px 40px rgba(0,0,0,0.65), 0 1px 0 rgba(255,255,255,0.04) inset",
+              "0 24px 50px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.06) inset",
           }}
         >
           {/* window chrome strip */}
@@ -434,40 +412,40 @@ function ChaosStack() {
               display: "flex",
               alignItems: "center",
               gap: 6,
-              padding: "7px 10px",
+              padding: "8px 12px",
               background: "oklch(10.5% 0.016 96)",
               borderBottom: "1px solid oklch(21% 0.02 96)",
             }}
           >
             <span
               style={{
-                width: 7,
-                height: 7,
+                width: 8,
+                height: 8,
                 borderRadius: "50%",
                 background: "#ff5f57",
               }}
             />
             <span
               style={{
-                width: 7,
-                height: 7,
+                width: 8,
+                height: 8,
                 borderRadius: "50%",
                 background: "#febc2e",
               }}
             />
             <span
               style={{
-                width: 7,
-                height: 7,
+                width: 8,
+                height: 8,
                 borderRadius: "50%",
                 background: "#28c840",
               }}
             />
             <span
               style={{
-                marginLeft: 8,
+                marginLeft: 10,
                 fontFamily: "var(--font-mono)",
-                fontSize: 9.5,
+                fontSize: 10,
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
                 color: "var(--color-text-faint)",
@@ -508,8 +486,9 @@ function ChaosStack() {
         style={{
           position: "absolute",
           inset: 0,
+          zIndex: 40,
           background:
-            "linear-gradient(180deg, transparent 50%, oklch(3.5% 0.008 96) 100%)",
+            "linear-gradient(180deg, transparent 60%, oklch(3.5% 0.008 96) 100%)",
           pointerEvents: "none",
         }}
       />
@@ -1344,10 +1323,18 @@ export default function LandingPageV2() {
       <LandingNav />
       <main>
         <Hero />
-        <IntegrationsRow />
-        <FeaturesSection />
-        <DataToWorkSection />
-        <FinalCTA />
+        <BlurFade delay={0.2}>
+          <AnimatedIntegrations />
+        </BlurFade>
+        <BlurFade delay={0.2}>
+          <FeaturesSection />
+        </BlurFade>
+        <BlurFade delay={0.2}>
+          <DataToWorkSection />
+        </BlurFade>
+        <BlurFade delay={0.2}>
+          <FinalCTA />
+        </BlurFade>
       </main>
     </div>
   );
