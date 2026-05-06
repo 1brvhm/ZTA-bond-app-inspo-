@@ -296,32 +296,32 @@ function SplitShowcase() {
       className="grid grid-cols-1 gap-[18px] lg:grid-cols-[1fr_1.25fr]"
     >
       <div
-        className="relative min-h-[480px] overflow-hidden rounded-[18px] border border-border p-7"
+        className="relative min-h-[620px] overflow-hidden rounded-[20px] border border-border p-8"
         style={{
           background:
-            "radial-gradient(120% 80% at 20% 0%, color-mix(in oklch, var(--color-accent) 5%, oklch(3.5% 0.008 96)) 0%, oklch(3.5% 0.008 96) 70%)",
+            "radial-gradient(140% 90% at 20% 0%, color-mix(in oklch, var(--color-accent) 6%, oklch(3.5% 0.008 96)) 0%, oklch(3.5% 0.008 96) 65%)",
         }}
       >
         <CornerOrnaments />
         <Eyebrow className="mb-2">Before</Eyebrow>
-        <h3 className="font-heading m-0 text-[38px] font-normal tracking-[-0.03em] text-[rgb(247,247,247)]">
+        <h3 className="font-heading m-0 text-[42px] font-normal tracking-[-0.03em] text-[rgb(247,247,247)]">
           Chaos.
         </h3>
         <ChaosStack />
       </div>
 
       <div
-        className="relative min-h-[480px] overflow-hidden rounded-[18px] border border-[color-mix(in_oklch,var(--color-accent)_28%,var(--color-border))] p-7 shadow-[0_0_0_1px_color-mix(in_oklch,var(--color-accent)_18%,transparent),0_30px_80px_rgba(229,199,0,0.10)]"
+        className="relative min-h-[620px] overflow-hidden rounded-[20px] border border-[color-mix(in_oklch,var(--color-accent)_28%,var(--color-border))] p-8 shadow-[0_0_0_1px_color-mix(in_oklch,var(--color-accent)_18%,transparent),0_40px_100px_rgba(229,199,0,0.12)]"
         style={{
           background:
-            "radial-gradient(120% 80% at 30% 0%, color-mix(in oklch, var(--color-accent) 11%, oklch(10.5% 0.016 96)) 0%, oklch(8.5% 0.012 96) 70%)",
+            "radial-gradient(140% 90% at 30% 0%, color-mix(in oklch, var(--color-accent) 13%, oklch(10.5% 0.016 96)) 0%, oklch(8.5% 0.012 96) 65%)",
         }}
       >
         <CornerOrnaments accent />
         <Eyebrow accent className="mb-2">
           After
         </Eyebrow>
-        <h3 className="font-heading m-0 text-[38px] font-normal tracking-[-0.03em] text-[var(--color-accent)]">
+        <h3 className="font-heading m-0 text-[42px] font-normal tracking-[-0.03em] text-[var(--color-accent)]">
           Handled.
         </h3>
         <BriefDashboard />
@@ -331,63 +331,143 @@ function SplitShowcase() {
 }
 
 function ChaosStack() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
-    target: containerRef,
+    target: sectionRef,
     offset: ["start end", "end start"],
   });
 
-  // Each card moves at a different rate — bidirectional parallax
-  const y0 = useTransform(scrollYProgress, [0, 1], [80, -80]);   // Gmail — medium
-  const y1 = useTransform(scrollYProgress, [0, 1], [130, -130]); // GCal — fastest
-  const y2 = useTransform(scrollYProgress, [0, 1], [50, -50]);   // Slack — slowest
+  // Bidirectional parallax — different depths per card
+  const yGmail  = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  const yGcal   = useTransform(scrollYProgress, [0, 1], [160, -160]);
+  const ySlack  = useTransform(scrollYProgress, [0, 1], [65,  -65]);
 
-  const cardStyle = {
-    position: "absolute" as const,
-    borderRadius: 10,
-    overflow: "hidden" as const,
-    border: "1px solid oklch(21% 0.02 96)",
-    background: "oklch(10.5% 0.016 96)",
-    boxShadow: "0 24px 60px rgba(0,0,0,0.75), 0 1px 0 rgba(255,255,255,0.04) inset",
-  };
-
-  const labelStyle = {
-    padding: "7px 12px",
-    borderBottom: "1px solid oklch(21% 0.02 96)",
-    background: "oklch(8% 0.012 96)",
-    fontFamily: "var(--font-mono)",
-    fontSize: 10,
-    letterSpacing: "0.14em",
-    textTransform: "uppercase" as const,
-    color: "var(--color-text-faint)",
-  };
+  const cards = [
+    {
+      label: "Gmail",
+      badge: "Inbox 99+",
+      img: "/images/chaos-gmail.png",
+      objPos: "25% 35%",
+      top: 10, left: "1%", width: 278,
+      rotate: -2, y: yGmail, z: 20,
+      delay: 0,
+    },
+    {
+      label: "Google Calendar",
+      badge: "4 conflicts",
+      img: "/images/chaos-gcal.png",
+      objPos: "40% 28%",
+      top: 110, left: "24%", width: 305,
+      rotate: 1.8, y: yGcal, z: 30,
+      delay: 0.12,
+    },
+    {
+      label: "Slack",
+      badge: "#general",
+      img: "/images/chaos-slack.png",
+      objPos: "85% 78%",
+      top: 250, left: "7%", width: 270,
+      rotate: -1, y: ySlack, z: 10,
+      delay: 0.24,
+    },
+  ];
 
   return (
-    <div ref={containerRef} style={{ position: "relative", height: 420, marginTop: 24 }}>
+    <div ref={sectionRef} style={{ position: "relative", height: 540, marginTop: 28 }}>
+      {cards.map((card, i) => (
+        /* Outer: one-time entrance slide-up */
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 55 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.05 }}
+          transition={{ duration: 0.85, delay: card.delay, ease: [0.16, 1, 0.3, 1] }}
+          style={{ position: "absolute", top: card.top, left: card.left, zIndex: card.z }}
+        >
+          {/* Inner: continuous scroll parallax + hover lift */}
+          <motion.div
+            whileHover={{ scale: 1.025, zIndex: 50 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              width: card.width,
+              rotate: card.rotate,
+              y: card.y,
+              borderRadius: 13,
+              overflow: "hidden",
+              border: "1px solid rgba(255,255,255,0.07)",
+              background: "linear-gradient(160deg, oklch(13% 0.016 96) 0%, oklch(9% 0.012 96) 100%)",
+              boxShadow: [
+                "0 2px 0 rgba(255,255,255,0.04) inset",
+                "0 40px 90px rgba(0,0,0,0.9)",
+                "0 12px 30px rgba(0,0,0,0.6)",
+                "0 0 0 0.5px rgba(255,255,255,0.03)",
+              ].join(", "),
+            }}
+          >
+            {/* Glass label bar */}
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "10px 14px",
+              background: "rgba(255,255,255,0.025)",
+              borderBottom: "1px solid rgba(255,255,255,0.06)",
+            }}>
+              <span style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 10,
+                letterSpacing: "0.13em",
+                textTransform: "uppercase" as const,
+                color: "oklch(68% 0.014 96)",
+              }}>{card.label}</span>
+              <span style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 9,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase" as const,
+                padding: "2px 8px",
+                borderRadius: 5,
+                background: "color-mix(in oklch, var(--color-accent) 14%, transparent)",
+                border: "1px solid color-mix(in oklch, var(--color-accent) 28%, transparent)",
+                color: "var(--color-accent)",
+              }}>{card.badge}</span>
+            </div>
 
-      {/* Gmail — top-left, tilted left */}
-      <motion.div style={{ ...cardStyle, top: 0, left: "0%", width: 268, rotate: -2.5, y: y0, zIndex: 20 }}>
-        <div style={labelStyle}>Gmail · Inbox 99+</div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/chaos-gmail.png" alt="" style={{ width: "100%", height: 130, objectFit: "cover", objectPosition: "25% 35%", filter: "saturate(0.8) brightness(0.88)", display: "block" }} />
-      </motion.div>
+            {/* Screenshot */}
+            <div style={{ position: "relative" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={card.img}
+                alt=""
+                style={{
+                  width: "100%",
+                  height: 155,
+                  objectFit: "cover",
+                  objectPosition: card.objPos,
+                  filter: "saturate(0.65) brightness(0.78) contrast(1.05)",
+                  display: "block",
+                }}
+              />
+              {/* Top-edge highlight */}
+              <div style={{
+                position: "absolute", top: 0, left: 0, right: 0, height: 1,
+                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.07) 50%, transparent 100%)",
+              }} />
+              {/* Bottom gradient bleed */}
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0, height: 48,
+                background: "linear-gradient(to bottom, transparent, oklch(9% 0.012 96))",
+              }} />
+            </div>
+          </motion.div>
+        </motion.div>
+      ))}
 
-      {/* GCal — center-right, tilted right, on top */}
-      <motion.div style={{ ...cardStyle, top: 55, left: "22%", width: 292, rotate: 2, y: y1, zIndex: 30 }}>
-        <div style={labelStyle}>GCal · 4 conflicts</div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/chaos-gcal.png" alt="" style={{ width: "100%", height: 148, objectFit: "cover", objectPosition: "40% 30%", filter: "saturate(0.8) brightness(0.88)", display: "block" }} />
-      </motion.div>
-
-      {/* Slack — bottom-left, slight tilt */}
-      <motion.div style={{ ...cardStyle, top: 195, left: "5%", width: 260, rotate: -1, y: y2, zIndex: 10 }}>
-        <div style={labelStyle}>Slack · #general</div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/chaos-slack.png" alt="" style={{ width: "100%", height: 120, objectFit: "cover", objectPosition: "85% 78%", filter: "saturate(0.8) brightness(0.88)", display: "block" }} />
-      </motion.div>
-
-      {/* Bottom fade-out */}
-      <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 40, background: "linear-gradient(180deg, transparent 45%, oklch(3.5% 0.008 96) 92%)", pointerEvents: "none" }} />
+      {/* Section-level bottom vignette */}
+      <div aria-hidden style={{
+        position: "absolute", inset: 0, zIndex: 40, pointerEvents: "none",
+        background: "linear-gradient(180deg, transparent 35%, color-mix(in oklch, oklch(3.5% 0.008 96) 95%, transparent) 88%)",
+      }} />
     </div>
   );
 }
