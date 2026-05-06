@@ -21,7 +21,7 @@ export function AnimatedIntegrations() {
   const isInView = useInView(containerRef, { once: false, amount: 0.3 });
 
   return (
-    <section className="px-[clamp(16px,3vw,32px)] pt-24 pb-12 overflow-hidden">
+    <section id="integrations" className="px-[clamp(16px,3vw,32px)] pt-24 pb-12 overflow-hidden">
       <div className="mx-auto max-w-4xl text-center">
         <EyebrowRule center>Seamless Integrations. Zero Disruption.</EyebrowRule>
         <h2 className="font-heading mt-5 text-[clamp(32px,3.6vw,48px)] leading-[1.02] font-normal tracking-[-0.025em] text-[var(--color-text)]">

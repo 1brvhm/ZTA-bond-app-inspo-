@@ -233,7 +233,12 @@ function LandingNav() {
     setMenuOpen(true);
   }, []);
 
-  const links = ["Why", "How it works", "Outcomes", "Pricing"];
+  const links: { label: string; id: string }[] = [
+    { label: "Features",     id: "why" },
+    { label: "How it works", id: "how-it-works" },
+    { label: "Integrations", id: "integrations" },
+    { label: "Pricing",      id: "pricing" },
+  ];
 
   return (
     <>
@@ -256,9 +261,9 @@ function LandingNav() {
             </a>
             <nav className="hidden lg:flex flex-1 items-center justify-center gap-0.5">
               {links.map((l) => (
-                <a key={l} href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
+                <a key={l.id} href={`#${l.id}`}
                   className="font-body text-[13px] font-medium px-4 py-1.5 rounded-full no-underline text-muted-foreground hover:text-foreground hover:bg-white/[0.06] transition-all duration-150">
-                  {l}
+                  {l.label}
                 </a>
               ))}
             </nav>
@@ -323,17 +328,25 @@ function LandingNav() {
             {/* Nav links */}
             <div className="relative z-10 flex flex-1 flex-col justify-center px-[clamp(28px,6vw,72px)] pb-16">
               {links.map((l, i) => (
-                <motion.a key={l}
-                  href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
-                  onClick={() => setMenuOpen(false)}
+                <motion.a key={l.id}
+                  href={`#${l.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // Restore scroll before navigating so the page can actually scroll
+                    document.body.style.overflow = "";
+                    setMenuOpen(false);
+                    requestAnimationFrame(() => {
+                      document.getElementById(l.id)?.scrollIntoView({ behavior: "smooth" });
+                    });
+                  }}
                   initial={{ opacity: 0, y: 28 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.38, delay: 0.22 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-display no-underline leading-[1.05] tracking-[-0.02em] py-[clamp(10px,2vw,18px)] border-b border-black/10 hover:pl-3 hover:border-black/25 transition-all duration-150"
+                  className="font-display no-underline leading-[1.05] tracking-[-0.02em] py-[clamp(10px,2vw,18px)] border-b border-black/10 hover:pl-3 hover:border-black/25 transition-all duration-150 cursor-pointer"
                   style={{ fontSize: "clamp(38px,8vw,72px)", color: "var(--color-accent-ink)" }}
                 >
-                  {l}
+                  {l.label}
                 </motion.a>
               ))}
 
@@ -1086,7 +1099,7 @@ function DataToWorkSection() {
   ];
 
   return (
-    <section className="px-[clamp(16px,3vw,32px)] py-24">
+    <section id="how-it-works" className="px-[clamp(16px,3vw,32px)] py-24">
       <div className="mx-auto max-w-7xl">
         <div className="text-center">
           <h2 className="font-heading text-[clamp(36px,4.4vw,56px)] leading-[1.02] font-normal tracking-[-0.025em] text-[var(--color-text)]">
