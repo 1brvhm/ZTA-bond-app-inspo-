@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, useScroll } from "motion/react";
+import { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -331,57 +331,63 @@ function SplitShowcase() {
 }
 
 function ChaosStack() {
-  const items = [
-    { app: "GCAL · 4 CONFLICTS", img: "/images/chaos-gcal.png", objectPosition: "40% 60%" },
-    { app: "GMAIL · INBOX 99+", img: "/images/chaos-gmail.png", objectPosition: "25% 35%" },
-    { app: "SLACK · #GENERAL", img: "/images/chaos-slack.png", objectPosition: "85% 78%" },
-  ];
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Each card moves at a different rate — bidirectional parallax
+  const y0 = useTransform(scrollYProgress, [0, 1], [80, -80]);   // Gmail — medium
+  const y1 = useTransform(scrollYProgress, [0, 1], [130, -130]); // GCal — fastest
+  const y2 = useTransform(scrollYProgress, [0, 1], [50, -50]);   // Slack — slowest
+
+  const cardStyle = {
+    position: "absolute" as const,
+    borderRadius: 10,
+    overflow: "hidden" as const,
+    border: "1px solid oklch(21% 0.02 96)",
+    background: "oklch(10.5% 0.016 96)",
+    boxShadow: "0 24px 60px rgba(0,0,0,0.75), 0 1px 0 rgba(255,255,255,0.04) inset",
+  };
+
+  const labelStyle = {
+    padding: "7px 12px",
+    borderBottom: "1px solid oklch(21% 0.02 96)",
+    background: "oklch(8% 0.012 96)",
+    fontFamily: "var(--font-mono)",
+    fontSize: 10,
+    letterSpacing: "0.14em",
+    textTransform: "uppercase" as const,
+    color: "var(--color-text-faint)",
+  };
 
   return (
-    <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 10 }}>
-      {items.map((it, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 56 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.05, margin: "-40px" }}
-          transition={{ duration: 0.72, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            background: "oklch(10.5% 0.016 96)",
-            border: "1px solid oklch(21% 0.02 96)",
-            borderRadius: 10,
-            overflow: "hidden",
-            boxShadow: "0 12px 32px rgba(0,0,0,0.6)",
-          }}
-        >
-          <div style={{
-            padding: "7px 12px",
-            borderBottom: "1px solid oklch(21% 0.02 96)",
-            background: "oklch(8.5% 0.012 96)",
-          }}>
-            <span style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 10,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase" as const,
-              color: "var(--color-text-faint)",
-            }}>{it.app}</span>
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={it.img}
-            alt=""
-            style={{
-              width: "100%",
-              height: 100,
-              objectFit: "cover",
-              objectPosition: it.objectPosition,
-              filter: "saturate(0.75) brightness(0.85)",
-              display: "block",
-            }}
-          />
-        </motion.div>
-      ))}
+    <div ref={containerRef} style={{ position: "relative", height: 420, marginTop: 24 }}>
+
+      {/* Gmail — top-left, tilted left */}
+      <motion.div style={{ ...cardStyle, top: 0, left: "0%", width: 268, rotate: -2.5, y: y0, zIndex: 20 }}>
+        <div style={labelStyle}>Gmail · Inbox 99+</div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/chaos-gmail.png" alt="" style={{ width: "100%", height: 130, objectFit: "cover", objectPosition: "25% 35%", filter: "saturate(0.8) brightness(0.88)", display: "block" }} />
+      </motion.div>
+
+      {/* GCal — center-right, tilted right, on top */}
+      <motion.div style={{ ...cardStyle, top: 55, left: "22%", width: 292, rotate: 2, y: y1, zIndex: 30 }}>
+        <div style={labelStyle}>GCal · 4 conflicts</div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/chaos-gcal.png" alt="" style={{ width: "100%", height: 148, objectFit: "cover", objectPosition: "40% 30%", filter: "saturate(0.8) brightness(0.88)", display: "block" }} />
+      </motion.div>
+
+      {/* Slack — bottom-left, slight tilt */}
+      <motion.div style={{ ...cardStyle, top: 195, left: "5%", width: 260, rotate: -1, y: y2, zIndex: 10 }}>
+        <div style={labelStyle}>Slack · #general</div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/chaos-slack.png" alt="" style={{ width: "100%", height: 120, objectFit: "cover", objectPosition: "85% 78%", filter: "saturate(0.8) brightness(0.88)", display: "block" }} />
+      </motion.div>
+
+      {/* Bottom fade-out */}
+      <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 40, background: "linear-gradient(180deg, transparent 45%, oklch(3.5% 0.008 96) 92%)", pointerEvents: "none" }} />
     </div>
   );
 }
@@ -837,153 +843,6 @@ function FeaturesSection() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   OUTCOMES
-   ═══════════════════════════════════════════════════════════════ */
-
-function Outcomes() {
-  const pillars = [
-    {
-      eyebrow: "Strategy",
-      title: "Find the right wins",
-      description:
-        "The one workflow that compounds — the task your team repeats 50 times a week, not the one that looks impressive in a deck.",
-      img: "/images/tenex-brain-statue.webp",
-      icon: "/images/icon-brain.png",
-    },
-    {
-      eyebrow: "Reach",
-      title: "Build the systems",
-      description:
-        "Agents that reach into the tools you already pay for — Notion, Slack, Gmail, Drive, your CRM — without copy-paste theater.",
-      img: "/images/tenex-globe-statue.webp",
-      icon: "/images/icon-globe.png",
-    },
-    {
-      eyebrow: "Execution",
-      title: "Make it stick",
-      description:
-        "Not a demo. Not a hackathon. A working first version on Monday, with a clear way to run it and a check that keeps it reliable.",
-      img: "/images/tenex-hammer-statue.webp",
-      icon: "/images/icon-hammer.png",
-    },
-  ];
-  return (
-    <section id="outcomes" className="px-[clamp(16px,3vw,32px)] py-24">
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-12 max-w-[720px]">
-          <EyebrowRule>How it works</EyebrowRule>
-          <h2 className="font-heading mt-5 text-[clamp(36px,4.4vw,56px)] leading-[1.02] font-normal tracking-[-0.025em] text-[var(--color-text)]">
-            Ancient craft. <span className="text-[var(--color-accent)]">New speed.</span>
-          </h2>
-          <p className="font-body mt-[18px] text-[17px] leading-[1.55] text-muted-foreground">
-            We find the right problem, build the right agent, and make sure it actually runs.
-            Every time.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 gap-[22px] lg:grid-cols-3">
-          {pillars.map((p, i) => (
-            <motion.article
-              key={p.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.1, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: i * 0.15 }}
-              className="relative overflow-hidden rounded-[18px] border border-border bg-[var(--color-surface)] shadow-[0_1px_2px_rgba(0,0,0,0.34)] transition-[transform,border-color] duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:border-[color-mix(in_oklch,var(--color-accent)_30%,var(--color-border))]"
-            >
-              <CornerOrnaments accent inset={12} />
-              <div
-                style={{
-                  position: "relative",
-                  aspectRatio: "4 / 3",
-                  background: "oklch(3.5% 0.008 96)",
-                  overflow: "hidden",
-                }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={p.img}
-                  alt=""
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    filter: "grayscale(0.25) contrast(1.05)",
-                    mixBlendMode: "luminosity",
-                  }}
-                />
-                <div
-                  aria-hidden
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(to bottom, transparent 50%, color-mix(in oklch, var(--color-surface) 92%, transparent))",
-                  }}
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 14,
-                    left: 14,
-                    width: 44,
-                    height: 44,
-                    borderRadius: 10,
-                    background:
-                      "color-mix(in oklch, var(--color-surface) 88%, transparent)",
-                    border:
-                      "1px solid color-mix(in oklch, var(--color-accent) 32%, var(--color-border))",
-                    display: "grid",
-                    placeItems: "center",
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.icon} alt="" style={{ width: 26, height: 26 }} />
-                </div>
-              </div>
-              <div style={{ padding: "22px 24px 26px" }}>
-                <Eyebrow>{p.eyebrow}</Eyebrow>
-                <h3
-                  style={{
-                    marginTop: 8,
-                    fontFamily: "var(--font-heading)",
-                    fontSize: 26,
-                    lineHeight: 1.1,
-                    letterSpacing: "-0.015em",
-                    color: "var(--color-text)",
-                    margin: "8px 0 0",
-                    fontWeight: 400,
-                  }}
-                >
-                  {p.title}
-                </h3>
-                <p
-                  style={{
-                    marginTop: 12,
-                    fontFamily: "var(--font-body)",
-                    fontSize: 14.5,
-                    lineHeight: 1.55,
-                    color: "var(--color-text-muted)",
-                    margin: "12px 0 0",
-                  }}
-                >
-                  {p.description}
-                </p>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   AGENT LOOP
-   ═══════════════════════════════════════════════════════════════ */
-
-
-/* ═══════════════════════════════════════════════════════════════
    DATA TO WORK
    ═══════════════════════════════════════════════════════════════ */
 
@@ -1227,9 +1086,6 @@ export default function LandingPageV2() {
         <Hero />
         <BlurFade delay={0.2}>
           <FeaturesSection />
-        </BlurFade>
-        <BlurFade delay={0.2}>
-          <Outcomes />
         </BlurFade>
         <BlurFade delay={0.2}>
           <DataToWorkSection />
