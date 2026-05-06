@@ -175,65 +175,41 @@ function StatusBadge({
 function HamburgerButton({
   open,
   onClick,
-  onYellow = false,
 }: {
   open: boolean;
   onClick: () => void;
-  onYellow?: boolean;
 }) {
-  const lineColor = onYellow ? "var(--color-accent-ink)" : "var(--color-text)";
   return (
-    <div className="relative">
-      {/* Accent pulse ring — fires on open */}
-      <AnimatePresence>
-        {open && (
-          <motion.span
-            key="ring"
-            initial={{ scale: 0.85, opacity: 0.7 }}
-            animate={{ scale: 2.6, opacity: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.55, ease: "easeOut" }}
-            className="pointer-events-none absolute inset-0 rounded-full"
-            style={{ background: "var(--color-accent)" }}
-          />
-        )}
-      </AnimatePresence>
-
-      <motion.button
-        onClick={onClick}
-        aria-label="Toggle menu"
-        animate={{
-          borderColor: onYellow
-            ? "rgba(0,0,0,0.15)"
-            : open
-            ? "color-mix(in oklch, var(--color-accent) 55%, transparent)"
-            : "var(--color-border)",
-          backgroundColor: onYellow
-            ? "rgba(0,0,0,0.08)"
-            : open
-            ? "color-mix(in oklch, var(--color-accent) 10%, var(--color-surface))"
-            : "var(--color-surface)",
-        }}
-        transition={{ duration: 0.28 }}
-        className="relative flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-full border"
-      >
-        <motion.span
-          animate={{ rotate: open ? 45 : 0, y: open ? 6.5 : 0, backgroundColor: lineColor }}
-          transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-          className="block h-[1.5px] w-[18px] rounded-full"
-        />
-        <motion.span
-          animate={{ opacity: open ? 0 : 1, scaleX: open ? 0 : 1, backgroundColor: lineColor }}
-          transition={{ duration: 0.22 }}
-          className="block h-[1.5px] w-[18px] rounded-full"
-        />
-        <motion.span
-          animate={{ rotate: open ? -45 : 0, y: open ? -6.5 : 0, backgroundColor: lineColor }}
-          transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-          className="block h-[1.5px] w-[18px] rounded-full"
-        />
-      </motion.button>
-    </div>
+    <motion.button
+      onClick={onClick}
+      aria-label="Toggle menu"
+      animate={{
+        borderColor: open
+          ? "color-mix(in oklch, var(--color-accent) 55%, transparent)"
+          : "var(--color-border)",
+        backgroundColor: open
+          ? "color-mix(in oklch, var(--color-accent) 10%, var(--color-surface))"
+          : "var(--color-surface)",
+      }}
+      transition={{ duration: 0.28 }}
+      className="flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-full border"
+    >
+      <motion.span
+        animate={{ rotate: open ? 45 : 0, y: open ? 6.5 : 0 }}
+        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+        className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
+      />
+      <motion.span
+        animate={{ opacity: open ? 0 : 1, scaleX: open ? 0 : 1 }}
+        transition={{ duration: 0.22 }}
+        className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
+      />
+      <motion.span
+        animate={{ rotate: open ? -45 : 0, y: open ? -6.5 : 0 }}
+        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+        className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
+      />
+    </motion.button>
   );
 }
 
