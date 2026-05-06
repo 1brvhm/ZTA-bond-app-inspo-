@@ -43,7 +43,7 @@ export function Features() {
             <div className="p-7 md:p-8">
               <Eyebrow>Daily Brief</Eyebrow>
               <h3
-                className="font-heading mt-3 text-[22px] leading-[1.15] tracking-[-0.02em]"
+                className="font-heading mt-3 text-[17px] leading-[1.3] tracking-[-0.01em]"
                 style={{ color: "var(--color-text)" }}
               >
                 Not a summary. Not a feed. A decision-grade Brief.
@@ -86,7 +86,7 @@ export function Features() {
             <div className="p-7 md:p-8">
               <Eyebrow>Instant answers</Eyebrow>
               <h3
-                className="font-heading mt-3 text-[22px] leading-[1.15] tracking-[-0.02em]"
+                className="font-heading mt-3 text-[17px] leading-[1.3] tracking-[-0.01em]"
                 style={{ color: "var(--color-text)" }}
               >
                 Ask Z2A Anything. Get answers from everywhere you work.
@@ -122,7 +122,7 @@ export function Features() {
             <div className="text-center">
               <Eyebrow>Hotkey access</Eyebrow>
               <h3
-                className="font-heading mt-3 text-[22px] leading-[1.2] tracking-[-0.02em]"
+                className="font-heading mt-3 text-[17px] leading-[1.3] tracking-[-0.01em]"
                 style={{ color: "var(--color-text)" }}
               >
                 Always one keystroke away.
@@ -135,7 +135,7 @@ export function Features() {
                   label: <><span className="absolute right-2 top-1.5 font-mono text-[10px] tracking-widest" style={{ color: "var(--color-text-faint)" }}>fn</span><Globe className="mt-auto size-4" style={{ color: "var(--color-text-muted)" } as React.CSSProperties} /></>,
                 },
                 {
-                  label: <span className="font-heading text-xl" style={{ color: "var(--color-text)" }}>K</span>,
+                  label: <span className="font-heading text-lg font-semibold" style={{ color: "var(--color-text)" }}>K</span>,
                 },
               ].map((key, i) => (
                 <div
@@ -161,7 +161,7 @@ export function Features() {
           >
             <Eyebrow>Seamless Integrations</Eyebrow>
             <h3
-              className="font-heading mt-3 text-[22px] leading-[1.15] tracking-[-0.02em]"
+              className="font-heading mt-3 text-[17px] leading-[1.3] tracking-[-0.01em]"
               style={{ color: "var(--color-text)" }}
             >
               No new apps. Zero disruption.
