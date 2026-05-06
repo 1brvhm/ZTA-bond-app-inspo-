@@ -41,19 +41,19 @@ export function Features() {
             className={`${card} ${accentBorder} sm:col-span-3`}
           >
             <div className="p-7 md:p-8">
-              <Eyebrow>Morning brief</Eyebrow>
+              <Eyebrow>Daily Brief</Eyebrow>
               <h3
                 className="font-heading mt-3 text-[22px] leading-[1.15] tracking-[-0.02em]"
                 style={{ color: "var(--color-text)" }}
               >
-                The brief lands at 7:30 AM.
+                Not a summary. Not a feed. A decision-grade Brief.
               </h3>
               <p
                 className="font-body mt-2 max-w-sm text-sm leading-[1.6]"
                 style={{ color: "var(--color-text-muted)" }}
               >
-                Your agent runs overnight — reads Slack, Gmail, and Linear, then ranks what actually
-                needs you. Open it. Act. Done.
+                Your agent runs overnight — reads Slack, Gmail, and Linear, then surfaces what actually
+                needs you. What You Need to Know. Who&apos;s Waiting on You. What You Need to Do.
               </p>
             </div>
 
@@ -89,7 +89,7 @@ export function Features() {
                 className="font-heading mt-3 text-[22px] leading-[1.15] tracking-[-0.02em]"
                 style={{ color: "var(--color-text)" }}
               >
-                Ask once. Get answers from everywhere you work.
+                Ask Z2A Anything. Get answers from everywhere you work.
               </h3>
             </div>
 
@@ -159,18 +159,18 @@ export function Features() {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className={`${card} ${accentBorder} sm:col-span-3 p-7 md:p-10`}
           >
-            <Eyebrow>Integrations</Eyebrow>
+            <Eyebrow>Seamless Integrations</Eyebrow>
             <h3
               className="font-heading mt-3 text-[22px] leading-[1.15] tracking-[-0.02em]"
               style={{ color: "var(--color-text)" }}
             >
-              No new apps. No new tabs.
+              No new apps. Zero disruption.
             </h3>
             <p
               className="font-body mt-2 max-w-sm text-sm leading-[1.6]"
               style={{ color: "var(--color-text-muted)" }}
             >
-              Gmail, Slack, Notion, Linear, GitHub. Same tools. Zero migration.
+              Gmail, Slack, Notion, Linear, GitHub. Same tools. Your data stays yours — zero training.
             </p>
 
             <div className="mt-8 grid grid-cols-3 gap-3 md:grid-cols-6">

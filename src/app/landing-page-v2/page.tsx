@@ -206,7 +206,7 @@ function LandingNav() {
             </a>
           ))}
         </nav>
-        <Button className={cn(landingPrimaryBtnSm, "gap-2.5")}>Reserve your seat →</Button>
+        <Button className={cn(landingPrimaryBtnSm, "gap-2.5")}>Book a Demo →</Button>
       </div>
     </header>
   );
@@ -242,26 +242,17 @@ function Hero() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 mx-auto max-w-7xl px-[clamp(16px,3vw,28px)] text-center"
       >
-        <div className="mb-7 flex flex-wrap justify-center gap-2.5">
-          <StatusBadge variant="live">
-            <span className="size-1.5 rounded-full bg-[var(--color-accent)] shadow-[0_0_8px_var(--color-accent)]" />
-            Applications open
-          </StatusBadge>
-        </div>
-
         <h1 className="font-heading m-0 text-[clamp(48px,7.4vw,96px)] leading-[0.96] font-normal tracking-[-0.035em] text-[var(--color-text)]">
-          AI workflows <span className="text-[var(--color-accent)]">you can run.</span>{" "}
-          <span className="text-muted-foreground">From Monday.</span>
+          Your AI <span className="text-[var(--color-accent)]">Chief of Staff.</span>
         </h1>
 
-        <p className="font-body mx-auto mt-6 max-w-[640px] text-[19px] leading-[1.55] text-muted-foreground">
-          We find the one task that eats your week, build the agent that handles it, and make sure it
-          runs reliably on Monday morning — without you.
+        <p className="font-body mx-auto mt-6 max-w-[600px] text-[19px] leading-[1.55] text-muted-foreground">
+          No more scattered information. No buried action items. One agent that surfaces what matters — every morning before you start.
         </p>
 
         <div className="mt-9 flex flex-wrap justify-center gap-3">
           <Button className={cn(landingPrimaryBtn, "gap-2.5")}>
-            Reserve your seat
+            Book a Demo
             <svg
               width="16"
               height="16"
@@ -279,12 +270,12 @@ function Hero() {
             </svg>
           </Button>
           <Button variant="outline" className={cn(landingOutlineBtn, "gap-2.5")}>
-            Book a call
+            See how it works
           </Button>
         </div>
 
         <p className="font-mono mt-3.5 text-[11px] tracking-[0.16em] text-[var(--color-text-faint)] uppercase">
-          $500 deposit · 100% refund if you aren&apos;t satisfied · 50 seats
+          For CEOs &amp; busy execs · pilot cohort closing soon
         </p>
       </motion.div>
 
@@ -625,7 +616,7 @@ function NeedsAttentionModule() {
     },
   ];
   return (
-    <ModuleCard label="Needs your attention" count={items.length}>
+    <ModuleCard label="Who's Waiting on You" count={items.length}>
       <div
         style={{
           display: "flex",
@@ -716,7 +707,7 @@ function TasksModule() {
     },
   ];
   return (
-    <ModuleCard label="Tasks" count={tasks.length}>
+    <ModuleCard label="What You Need to Do" count={tasks.length}>
       <ul
         style={{
           listStyle: "none",
@@ -792,7 +783,7 @@ function ProposalsModule() {
     { title: "Weekly metrics digest from Linear + GA", impact: "+2h/wk" },
   ];
   return (
-    <ModuleCard label="Proposals" count={props.length}>
+    <ModuleCard label="Where Your Time Should Go" count={props.length}>
       <div
         style={{
           display: "flex",
@@ -935,10 +926,10 @@ function FeaturesSection() {
   return (
     <div id="why">
       <div className="mx-auto max-w-7xl px-[clamp(16px,3vw,32px)] pb-4 pt-20 text-center">
-        <EyebrowRule center>What changes</EyebrowRule>
+        <EyebrowRule center>Daily Brief</EyebrowRule>
         <h2 className="font-heading mt-5 text-[clamp(36px,3.6vw,54px)] leading-[1.02] font-normal tracking-[-0.025em] text-[var(--color-text)]">
-          Morning brief. No new tools.{" "}
-          <span className="text-[var(--color-accent)]">One keystroke away.</span>
+          You start your day with a Brief{" "}
+          <span className="text-[var(--color-accent)]">built for leaders.</span>
         </h2>
       </div>
       <Features />
@@ -981,13 +972,13 @@ function Outcomes() {
     <section id="outcomes" className="px-[clamp(16px,3vw,32px)] py-24">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-[720px]">
-          <EyebrowRule>Three pillars</EyebrowRule>
+          <EyebrowRule>How it works</EyebrowRule>
           <h2 className="font-heading mt-5 text-[clamp(36px,4.4vw,56px)] leading-[1.02] font-normal tracking-[-0.025em] text-[var(--color-text)]">
             Ancient craft. <span className="text-[var(--color-accent)]">New speed.</span>
           </h2>
           <p className="font-body mt-[18px] text-[17px] leading-[1.55] text-muted-foreground">
-            We&apos;ve always found the right problem, built the right system, and made sure it sticks.
-            We&apos;re just faster now.
+            We find the right problem, build the right agent, and make sure it actually runs.
+            Every time.
           </p>
         </div>
 
@@ -1101,21 +1092,21 @@ function DataToWorkSection() {
   const promptChips = [
     [
       "What do I need to focus on today?",
-      "Remind me about...",
       "Summarize everything I missed.",
+      "Who's waiting on me?",
       "Prepare me for my next meeting.",
-    ],
-    [
-      "Turn this into actionable tasks.",
-      "Show me every open thread.",
-      "Plan my ideal week.",
-      "Explain this to me.",
     ],
     [
       "What needs my attention right now?",
       "Draft the follow-up email.",
-      "Give me good news",
+      "Where should my time go today?",
       "What are the risks right now?",
+    ],
+    [
+      "Show me every open thread.",
+      "What do I need to do?",
+      "Give me a status update.",
+      "What moved this week?",
     ],
   ];
 
@@ -1123,11 +1114,10 @@ function DataToWorkSection() {
     <section className="px-[clamp(16px,3vw,32px)] py-24">
       <div className="mx-auto max-w-7xl text-center">
         <h2 className="font-heading text-[clamp(36px,4.4vw,56px)] leading-[1.02] font-normal tracking-[-0.025em] text-[var(--color-text)]">
-          Put your data to{" "}
-          <span className="text-[var(--color-accent)]">work</span>
+          Put your data to <span className="text-[var(--color-accent)]">work.</span>
         </h2>
-        <p className="font-body mx-auto mt-4 max-w-[520px] text-[17px] leading-[1.55] text-muted-foreground">
-          Your company already has all the data. Z2A makes sense of it.
+        <p className="font-body mx-auto mt-4 max-w-[480px] text-[17px] leading-[1.55] text-muted-foreground">
+          Your company already has all the data. Ask Z2A Anything.
         </p>
 
         <div className="relative mt-16">
@@ -1181,7 +1171,7 @@ function DataToWorkSection() {
               <div className="flex flex-col items-center">
                 <BrandOrb size={44} glow />
                 <p className="font-heading mt-3 text-lg tracking-tight text-[var(--color-text)]">
-                  Ask Z2A Anything...
+                  Ask Z2A Anything…
                 </p>
               </div>
 
@@ -1267,17 +1257,16 @@ function FinalCTA() {
           <div className="mb-4 inline-flex justify-center">
             <BrandOrb size={48} glow />
           </div>
-          <Eyebrow accent>Spring 2026 cohort</Eyebrow>
+          <Eyebrow accent>Join our next cohort</Eyebrow>
           <h2 className="font-heading mt-3.5 text-[clamp(40px,5.6vw,84px)] leading-[0.96] font-normal tracking-[-0.03em] text-[var(--color-text)]">
-            From zero, <span className="text-[var(--color-accent)]">to agent.</span>
+            Chaos. <span className="text-[var(--color-accent)]">Handled.</span>
           </h2>
-          <p className="font-body mx-auto mt-5 max-w-[560px] text-lg leading-[1.55] text-muted-foreground">
-            One weekend in Toronto. One repeat task from your work. A workflow you can run on Monday — and
-            a plan to keep it running.
+          <p className="font-body mx-auto mt-5 max-w-[520px] text-lg leading-[1.55] text-muted-foreground">
+            One weekend. One repeat workflow from your business. A working AI agent running by Monday — and a plan to keep it that way.
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <Button className={cn(landingPrimaryBtn, "gap-2.5")}>
-              Reserve your seat
+              Book a Demo
               <svg
                 width="16"
                 height="16"
@@ -1295,12 +1284,29 @@ function FinalCTA() {
               </svg>
             </Button>
             <Button variant="outline" className={cn(landingOutlineBtn, "gap-2.5")}>
-              Read the syllabus
+              Learn more
             </Button>
           </div>
           <p className="font-mono mt-[18px] text-[11px] tracking-[0.16em] text-[var(--color-text-faint)] uppercase">
-            $500 deposit · 7 of 50 seats remaining · 100% refund
+            Pilot cohort · spots limited · 100% satisfaction guarantee
           </p>
+
+          {/* Trust badges */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-[var(--color-surface)] px-4 py-2">
+              <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-text-faint)] uppercase">Backed by</span>
+              <span className="font-heading text-sm font-medium text-[var(--color-text)]">Y Combinator</span>
+            </div>
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-[var(--color-surface)] px-4 py-2">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="text-[var(--color-accent)]">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-text-faint)] uppercase">SOC 2 Type 2</span>
+            </div>
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-[var(--color-surface)] px-4 py-2">
+              <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-text-faint)] uppercase">Your data. Zero training.</span>
+            </div>
+          </div>
         </div>
       </motion.div>
     </section>
