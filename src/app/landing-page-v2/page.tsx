@@ -340,9 +340,23 @@ function LandingNav() {
             {/* Top bar inside menu */}
             <div className="relative z-10 flex items-center justify-between px-[clamp(16px,4vw,40px)] pt-5 pb-2">
               <a href="#top" onClick={() => setMenuOpen(false)} className="no-underline">
-                <LandingWordmark />
+                <BrandWordmark
+                  className="gap-3"
+                  textClassName="font-heading text-[22px] leading-none tracking-tight text-[var(--color-accent-ink)]"
+                  style={{ color: "var(--color-accent-ink)" }}
+                />
               </a>
-              <HamburgerButton open={true} onClick={() => setMenuOpen(false)} onYellow />
+              {/* Plain close button — no stateful animation to leak outside clip-path */}
+              <button
+                onClick={() => setMenuOpen(false)}
+                aria-label="Close menu"
+                className="flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-150"
+                style={{ background: "rgba(0,0,0,0.08)", border: "1px solid rgba(0,0,0,0.12)" }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-ink)" strokeWidth={2.5} strokeLinecap="round">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
             </div>
 
             {/* Nav links */}
