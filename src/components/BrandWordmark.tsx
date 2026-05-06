@@ -121,7 +121,7 @@ export function BrandWordmark({
         </svg>
       </span>
       {!orbOnly && (
-        <span className={`font-heading text-[18px] leading-none tracking-tight ${textClassName}`.trim()}>
+        <span className={`font-heading text-[18px] font-semibold leading-none tracking-tight ${textClassName}`.trim()}>
           Zero to Agent
         </span>
       )}

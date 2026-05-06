@@ -39,8 +39,9 @@
 
 /* ─── Z2A design tokens (dark-first) ─── */
 @theme {
-  --font-heading: "Mondwest", system-ui, sans-serif;
-  --font-body: "GT Standard", "IBM Plex Sans", system-ui, sans-serif;
+  --font-display: "Mondwest", system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans", "Avenir Next", "Avenir", system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans", "Avenir Next", "Avenir", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
   --spacing: 0.25rem;
@@ -108,6 +109,10 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   overflow-x: clip;
+}
+
+.font-display {
+  font-family: var(--font-display);
 }
 
 .font-heading {

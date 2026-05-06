@@ -1,0 +1,7 @@
+<svg viewBox="-4 -4 132 108" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <!-- Z mark with rounded outer corners and arrow tips on both arms -->
+  <path
+    fill="#FFE600"
+    d="M8,0 L86,0 L108,0 L122,16 L102,28 L0,72 L0,92 Q0,100 8,100 L86,100 L108,100 L122,84 L102,72 L0,28 L0,8 Q0,0 8,0 Z"
+  />
+</svg>

@@ -192,8 +192,12 @@ function LandingNav() {
       )}
     >
       <div className="mx-auto flex max-w-7xl items-center gap-7 px-[clamp(16px,3vw,32px)] py-3.5">
-        <a href="#top" className="no-underline">
-          <LandingWordmark />
+        <a href="#top" className="no-underline flex items-center gap-2.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/z2a-mark.svg" alt="" width={28} height={24} style={{ display: "block" }} />
+          <span className="font-heading text-[17px] font-semibold tracking-tight leading-none text-[var(--color-text)]">
+            Zero to Agent
+          </span>
         </a>
         <nav className="ml-auto hidden items-center gap-7 lg:flex">
           {links.map((l) => (
@@ -242,7 +246,7 @@ function Hero() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 mx-auto max-w-7xl px-[clamp(16px,3vw,28px)] text-center"
       >
-        <h1 className="font-heading m-0 text-[clamp(48px,7.4vw,96px)] leading-[0.96] font-normal tracking-[-0.035em] text-[var(--color-text)]">
+        <h1 className="font-display m-0 text-[clamp(48px,7.4vw,96px)] leading-[0.96] font-normal tracking-[-0.035em] text-[var(--color-text)]">
           Your AI <span className="text-[var(--color-accent)]">Chief of Staff.</span>
         </h1>
 
@@ -978,16 +982,17 @@ function DataToWorkSection() {
             className="w-full lg:max-w-[400px] mx-auto flex-shrink-0 rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.5),0_0_0_1px_var(--color-border)]"
           >
             <div className="flex flex-col items-center">
-              {/* Modern flat Z logo */}
+              {/* Z2A mark */}
               <div style={{
                 width: 44, height: 44,
                 borderRadius: 12,
-                background: "var(--color-accent)",
+                background: "oklch(10% 0.012 96)",
                 display: "grid",
                 placeItems: "center",
-                boxShadow: "0 0 28px color-mix(in oklch, var(--color-accent) 45%, transparent)",
+                boxShadow: "0 0 28px color-mix(in oklch, var(--color-accent) 35%, transparent), 0 0 0 1px color-mix(in oklch, var(--color-accent) 22%, transparent)",
               }}>
-                <span style={{ fontFamily: "var(--font-heading)", fontSize: 22, color: "var(--color-accent-ink)", lineHeight: 1 }}>Z</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/z2a-mark.svg" alt="Z2A" width={22} height={19} style={{ display: "block" }} />
               </div>
               <p className="font-heading mt-3 text-lg tracking-tight text-[var(--color-text)]">
                 Ask Z2A Anything…
@@ -1089,11 +1094,21 @@ function FinalCTA() {
         />
         <CornerOrnaments accent inset={20} />
         <div className="relative">
-          <div className="mb-4 inline-flex justify-center">
-            <BrandOrb size={48} glow />
+          <div className="mb-5 inline-flex justify-center">
+            <div style={{
+              width: 56, height: 56,
+              borderRadius: 14,
+              background: "oklch(10% 0.012 96)",
+              display: "grid",
+              placeItems: "center",
+              boxShadow: "0 0 36px color-mix(in oklch, var(--color-accent) 40%, transparent), 0 0 0 1px color-mix(in oklch, var(--color-accent) 25%, transparent)",
+            }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/z2a-mark.svg" alt="Z2A" width={28} height={23} style={{ display: "block" }} />
+            </div>
           </div>
           <Eyebrow accent>Join our next cohort</Eyebrow>
-          <h2 className="font-heading mt-3.5 text-[clamp(40px,5.6vw,84px)] leading-[0.96] font-normal tracking-[-0.03em] text-[var(--color-text)]">
+          <h2 className="font-display mt-3.5 text-[clamp(40px,5.6vw,84px)] leading-[0.96] font-normal tracking-[-0.03em] text-[var(--color-text)]">
             Chaos. <span className="text-[var(--color-accent)]">Handled.</span>
           </h2>
           <p className="font-body mx-auto mt-5 max-w-[520px] text-lg leading-[1.55] text-muted-foreground">

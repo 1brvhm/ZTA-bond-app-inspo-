@@ -114,7 +114,8 @@ export function AnimatedIntegrations() {
           {/* Center Agent Node */}
           <div className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-[var(--color-surface)] border border-[color-mix(in_oklch,var(--color-accent)_24%,var(--color-border))] shadow-[0_0_40px_rgba(229,199,0,0.15)] z-10">
              <div className="h-10 w-10 rounded-full bg-[var(--color-accent)] opacity-20 blur-xl absolute" />
-             <span className="font-heading text-4xl text-[var(--color-text)] font-semibold z-10">Z</span>
+             {/* eslint-disable-next-line @next/next/no-img-element */}
+             <img src="/z2a-mark.svg" alt="Z2A" width={36} height={30} className="relative z-10" />
           </div>
 
           {/* Left Logos */}
