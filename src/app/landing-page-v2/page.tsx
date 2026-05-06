@@ -192,12 +192,8 @@ function LandingNav() {
       )}
     >
       <div className="mx-auto flex max-w-7xl items-center gap-7 px-[clamp(16px,3vw,32px)] py-3.5">
-        <a href="#top" className="no-underline flex items-center gap-2.5">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/z2a-mark.svg" alt="" width={28} height={24} style={{ display: "block" }} />
-          <span className="font-heading text-[17px] font-semibold tracking-tight leading-none text-[var(--color-text)]">
-            Zero to Agent
-          </span>
+        <a href="#top" className="no-underline">
+          <LandingWordmark />
         </a>
         <nav className="ml-auto hidden items-center gap-7 lg:flex">
           {links.map((l) => (
