@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -172,43 +172,189 @@ function StatusBadge({
    NAV
    ═══════════════════════════════════════════════════════════════ */
 
+function HamburgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label="Toggle menu"
+      className="relative flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors duration-200 hover:border-[color-mix(in_oklch,var(--color-accent)_35%,var(--color-border))]"
+    >
+      <motion.span
+        animate={open ? { rotate: 45, y: 6.5 } : { rotate: 0, y: 0 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
+      />
+      <motion.span
+        animate={open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
+      />
+      <motion.span
+        animate={open ? { rotate: -45, y: -6.5 } : { rotate: 0, y: 0 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
+      />
+    </button>
+  );
+}
+
 function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
+    const onScroll = () => setScrolled(window.scrollY > 48);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
   const links = ["Why", "How it works", "Outcomes", "Pricing"];
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-50 border-b transition-[background-color,border-color] duration-[240ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-        scrolled
-          ? "border-border bg-[color-mix(in_oklch,var(--color-bg-900)_88%,transparent)]"
-          : "border-transparent bg-transparent",
-      )}
-    >
-      <div className="mx-auto flex max-w-7xl items-center gap-7 px-[clamp(16px,3vw,32px)] py-3.5">
-        <a href="#top" className="no-underline">
-          <LandingWordmark />
-        </a>
-        <nav className="ml-auto hidden items-center gap-7 lg:flex">
-          {links.map((l) => (
-            <a
-              key={l}
-              href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
-              className="font-body text-[13px] font-medium tracking-tight text-muted-foreground no-underline transition-colors duration-150 hover:text-foreground"
-            >
-              {l}
-            </a>
-          ))}
-        </nav>
-        <Button className={cn(landingPrimaryBtnSm, "gap-2.5")}>Book a Demo →</Button>
-      </div>
-    </header>
+    <>
+      <header
+        className={cn(
+          "sticky top-0 z-50 transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
+          scrolled ? "border-b border-white/[0.05] py-2" : "border-b border-transparent py-4",
+        )}
+        style={{
+          background: scrolled ? "rgba(5, 4, 8, 0.78)" : "transparent",
+          backdropFilter: scrolled ? "blur(18px) saturate(1.4)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(18px) saturate(1.4)" : "none",
+        }}
+      >
+        <div className="mx-auto flex max-w-7xl items-center px-[clamp(16px,3vw,32px)]">
+          {/* Logo */}
+          <a href="#top" className="no-underline shrink-0">
+            <LandingWordmark size={scrolled ? "sm" : "md"} />
+          </a>
+
+          {/* Desktop centered nav links */}
+          <nav className="hidden lg:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
+            {links.map((l) => (
+              <a
+                key={l}
+                href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
+                className="font-body text-[13px] font-medium px-4 py-2 rounded-full no-underline text-muted-foreground hover:text-foreground hover:bg-white/[0.05] transition-all duration-150"
+              >
+                {l}
+              </a>
+            ))}
+          </nav>
+
+          {/* Right side */}
+          <div className="ml-auto flex items-center gap-3">
+            <Button className={cn(landingPrimaryBtnSm, "hidden lg:flex gap-2")}>
+              Book a Demo →
+            </Button>
+            <HamburgerButton open={menuOpen} onClick={() => setMenuOpen(o => !o)} />
+          </div>
+        </div>
+      </header>
+
+      {/* ── Fullscreen yellow menu overlay ── */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[99] flex flex-col overflow-hidden"
+            style={{ background: "var(--color-accent)" }}
+          >
+            {/* Falling brand orbs (decorative) */}
+            {[
+              { size: 380, x: "68%", topPct: "4%",  delay: 0,    blur: 90 },
+              { size: 220, x: "8%",  topPct: "55%", delay: 0.06, blur: 65 },
+              { size: 160, x: "42%", topPct: "80%", delay: 0.1,  blur: 50 },
+              { size: 130, x: "85%", topPct: "62%", delay: 0.04, blur: 40 },
+            ].map((orb, i) => (
+              <motion.div
+                key={i}
+                aria-hidden
+                initial={{ y: -(orb.size + 80), opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -(orb.size + 80), opacity: 0 }}
+                transition={{ duration: 1.1, delay: orb.delay, ease: [0.16, 1, 0.3, 1] }}
+                style={{
+                  position: "absolute",
+                  width: orb.size,
+                  height: orb.size,
+                  borderRadius: "50%",
+                  left: orb.x,
+                  top: orb.topPct,
+                  background:
+                    "radial-gradient(circle at 32% 28%, rgba(255,232,120,0.95) 0%, rgba(245,197,66,0.85) 40%, rgba(184,134,11,0.65) 100%)",
+                  filter: `blur(${orb.blur}px)`,
+                  pointerEvents: "none",
+                }}
+              />
+            ))}
+
+            {/* Header row inside menu */}
+            <div className="relative z-10 flex items-center justify-between px-[clamp(16px,3vw,32px)] py-4">
+              <a href="#top" onClick={() => setMenuOpen(false)} className="no-underline">
+                <LandingWordmark />
+              </a>
+              <HamburgerButton open={menuOpen} onClick={() => setMenuOpen(false)} />
+            </div>
+
+            {/* Menu items */}
+            <div className="relative z-10 flex flex-1 flex-col justify-center px-[clamp(24px,6vw,64px)] pb-20">
+              <div className="flex flex-col">
+                {links.map((l, i) => (
+                  <motion.a
+                    key={l}
+                    href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
+                    onClick={() => setMenuOpen(false)}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 24 }}
+                    transition={{ duration: 0.55, delay: 0.1 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                    className="font-display no-underline leading-[1.05] tracking-tight py-4 border-b border-black/10 hover:border-black/30 hover:pl-2 transition-all duration-200"
+                    style={{
+                      fontSize: "clamp(36px, 7.5vw, 68px)",
+                      color: "var(--color-accent-ink)",
+                    }}
+                  >
+                    {l}
+                  </motion.a>
+                ))}
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 12 }}
+                transition={{ duration: 0.5, delay: 0.46 }}
+                className="mt-10"
+              >
+                <a
+                  href="#pricing"
+                  onClick={() => setMenuOpen(false)}
+                  className="inline-flex items-center gap-3 rounded-xl font-body font-semibold no-underline text-[16px] px-7 py-4 transition-transform duration-150 hover:-translate-y-px"
+                  style={{
+                    background: "var(--color-accent-ink)",
+                    color: "var(--color-accent)",
+                  }}
+                >
+                  Book a Demo
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                    <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
