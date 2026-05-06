@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
+import { useState, useEffect } from "react";
+import { motion, useScroll } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -274,8 +274,8 @@ function Hero() {
           </Button>
         </div>
 
-        <p className="font-mono mt-3.5 text-[11px] tracking-[0.16em] text-[var(--color-text-faint)] uppercase">
-          For CEOs &amp; busy execs · pilot cohort closing soon
+        <p className="font-mono mt-3.5 text-[11px] tracking-[0.16em] text-[var(--color-text-muted)] uppercase">
+          For CEOs &amp; busy execs
         </p>
       </motion.div>
 
@@ -331,158 +331,57 @@ function SplitShowcase() {
 }
 
 function ChaosStack() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, 60]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [40, 0]);
-  const y3 = useTransform(scrollYProgress, [0, 1], [80, -60]);
-
   const items = [
-    {
-      app: "GCal · 4 conflicts",
-      img: "/images/chaos-gcal.png",
-      objectPosition: "40% 60%",
-      top: 0,
-      w: 260,
-      h: 130,
-      z: 10,
-      y: y1,
-    },
-    {
-      app: "Gmail · Inbox 99+",
-      img: "/images/chaos-gmail.png",
-      objectPosition: "25% 35%",
-      top: 90,
-      w: 280,
-      h: 140,
-      z: 20,
-      y: y2,
-    },
-    {
-      app: "Slack · #general",
-      img: "/images/chaos-slack.png",
-      objectPosition: "85% 78%",
-      top: 190,
-      w: 300,
-      h: 150,
-      z: 30,
-      y: y3,
-    },
+    { app: "GCAL · 4 CONFLICTS", img: "/images/chaos-gcal.png", objectPosition: "40% 60%" },
+    { app: "GMAIL · INBOX 99+", img: "/images/chaos-gmail.png", objectPosition: "25% 35%" },
+    { app: "SLACK · #GENERAL", img: "/images/chaos-slack.png", objectPosition: "85% 78%" },
   ];
 
   return (
-    <div ref={containerRef} style={{ position: "relative", height: 460, marginTop: 16, display: "flex", justifyContent: "center" }}>
+    <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 10 }}>
       {items.map((it, i) => (
         <motion.div
           key={i}
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 56 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.1, margin: "-50px" }}
-          transition={{ duration: 0.7, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: false, amount: 0.05, margin: "-40px" }}
+          transition={{ duration: 0.72, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
           style={{
-            position: "absolute",
-            top: it.top,
-            width: it.w,
-            zIndex: it.z,
-            y: it.y,
-            background: "oklch(12.5% 0.018 96)",
+            background: "oklch(10.5% 0.016 96)",
             border: "1px solid oklch(21% 0.02 96)",
-            borderRadius: 12,
+            borderRadius: 10,
             overflow: "hidden",
-            boxShadow:
-              "0 24px 50px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.06) inset",
+            boxShadow: "0 12px 32px rgba(0,0,0,0.6)",
           }}
         >
-          {/* window chrome strip */}
-          <div
+          <div style={{
+            padding: "7px 12px",
+            borderBottom: "1px solid oklch(21% 0.02 96)",
+            background: "oklch(8.5% 0.012 96)",
+          }}>
+            <span style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 10,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase" as const,
+              color: "var(--color-text-faint)",
+            }}>{it.app}</span>
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={it.img}
+            alt=""
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              padding: "8px 12px",
-              background: "oklch(10.5% 0.016 96)",
-              borderBottom: "1px solid oklch(21% 0.02 96)",
+              width: "100%",
+              height: 100,
+              objectFit: "cover",
+              objectPosition: it.objectPosition,
+              filter: "saturate(0.75) brightness(0.85)",
+              display: "block",
             }}
-          >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "#ff5f57",
-              }}
-            />
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "#febc2e",
-              }}
-            />
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "#28c840",
-              }}
-            />
-            <span
-              style={{
-                marginLeft: 10,
-                fontFamily: "var(--font-mono)",
-                fontSize: 10,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "var(--color-text-faint)",
-              }}
-            >
-              {it.app}
-            </span>
-          </div>
-          {/* cropped screenshot */}
-          <div style={{ position: "relative", height: it.h, background: "#000" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={it.img}
-              alt=""
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: it.objectPosition,
-                filter: "saturate(0.85) brightness(0.92)",
-                display: "block",
-              }}
-            />
-            <div
-              aria-hidden
-              style={{
-                position: "absolute",
-                inset: 0,
-                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.04)",
-                pointerEvents: "none",
-              }}
-            />
-          </div>
+          />
         </motion.div>
       ))}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 40,
-          background:
-            "linear-gradient(180deg, transparent 60%, oklch(3.5% 0.008 96) 100%)",
-          pointerEvents: "none",
-        }}
-      />
     </div>
   );
 }
@@ -558,10 +457,10 @@ function ModuleCard({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.1 }}
-      transition={{ duration: 0.5 }}
+      viewport={{ once: false, amount: 0.05 }}
+      transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
       style={{
         background: "oklch(12.5% 0.018 96)",
         border: "1px solid oklch(21% 0.02 96)",
@@ -1089,137 +988,134 @@ function Outcomes() {
    ═══════════════════════════════════════════════════════════════ */
 
 function DataToWorkSection() {
-  const promptChips = [
-    [
-      "What do I need to focus on today?",
-      "Summarize everything I missed.",
-      "Who's waiting on me?",
-      "Prepare me for my next meeting.",
-    ],
-    [
-      "What needs my attention right now?",
-      "Draft the follow-up email.",
-      "Where should my time go today?",
-      "What are the risks right now?",
-    ],
-    [
-      "Show me every open thread.",
-      "What do I need to do?",
-      "Give me a status update.",
-      "What moved this week?",
-    ],
+  const leftChips = [
+    "What do I need to focus on today?",
+    "Who's waiting on me?",
+    "Summarize everything I missed.",
+    "Draft the follow-up email.",
+  ];
+  const rightChips = [
+    "What needs my attention right now?",
+    "Where should my time go?",
+    "What are the risks right now?",
+    "What moved this week?",
   ];
 
   return (
     <section className="px-[clamp(16px,3vw,32px)] py-24">
-      <div className="mx-auto max-w-7xl text-center">
-        <h2 className="font-heading text-[clamp(36px,4.4vw,56px)] leading-[1.02] font-normal tracking-[-0.025em] text-[var(--color-text)]">
-          Put your data to <span className="text-[var(--color-accent)]">work.</span>
-        </h2>
-        <p className="font-body mx-auto mt-4 max-w-[480px] text-[17px] leading-[1.55] text-muted-foreground">
-          Your company already has all the data. Ask Z2A Anything.
-        </p>
+      <div className="mx-auto max-w-7xl">
+        <div className="text-center">
+          <h2 className="font-heading text-[clamp(36px,4.4vw,56px)] leading-[1.02] font-normal tracking-[-0.025em] text-[var(--color-text)]">
+            Put your data to <span className="text-[var(--color-accent)]">work.</span>
+          </h2>
+          <p className="font-body mx-auto mt-4 max-w-[480px] text-[17px] leading-[1.55] text-muted-foreground">
+            Your company already has all the data. Ask Z2A Anything.
+          </p>
+        </div>
 
-        <div className="relative mt-16">
-          {/* Background chips — spread across full width in 3 rows; card overlays the middle */}
-          <div
-            aria-hidden="true"
-            className="hidden md:flex flex-col gap-5 select-none pointer-events-none"
-          >
-            {promptChips.map((row, rowIdx) => (
-              <div
-                key={rowIdx}
-                className={cn(
-                  "flex justify-between gap-3",
-                  rowIdx === 1 && "px-12",
-                  rowIdx !== 1 && "px-2",
-                )}
-              >
-                {row.map((chip) => (
-                  <span
-                    key={chip}
-                    className="inline-flex shrink-0 items-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm text-[var(--color-text-muted)]"
-                  >
-                    {chip}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-
-          {/* Mobile chip stack — render one rail without overlap */}
-          <div className="flex flex-wrap justify-center gap-2.5 md:hidden">
-            {[...promptChips[0], ...promptChips[2]].map((chip) => (
-              <span
+        <div className="mt-16 flex items-center gap-6">
+          {/* Left chips */}
+          <div className="hidden lg:flex flex-col gap-3 flex-1">
+            {leftChips.map((chip, i) => (
+              <motion.div
                 key={chip}
-                className="inline-flex items-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3.5 py-1.5 text-xs text-[var(--color-text-muted)]"
+                initial={{ opacity: 0, x: -28 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, amount: 0.1 }}
+                transition={{ duration: 0.55, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm text-left text-[var(--color-text-muted)] hover:border-[color-mix(in_oklch,var(--color-accent)_30%,var(--color-border))] hover:text-[var(--color-text)] transition-colors duration-200"
               >
                 {chip}
-              </span>
+              </motion.div>
             ))}
           </div>
 
-          {/* Central chatbot card — absolutely centered over chips on md+ */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          {/* Center card */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 24 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.1, margin: "-50px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-8 flex justify-center md:absolute md:inset-0 md:mt-0 md:items-center"
+            viewport={{ once: false, amount: 0.1 }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full lg:max-w-[400px] mx-auto flex-shrink-0 rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.5),0_0_0_1px_var(--color-border)]"
           >
-            <div className="relative w-full max-w-[420px] rounded-[20px] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.45),0_0_0_1px_var(--color-border)]">
-              <div className="flex flex-col items-center">
-                <BrandOrb size={44} glow />
-                <p className="font-heading mt-3 text-lg tracking-tight text-[var(--color-text)]">
-                  Ask Z2A Anything…
-                </p>
+            <div className="flex flex-col items-center">
+              {/* Modern flat Z logo */}
+              <div style={{
+                width: 44, height: 44,
+                borderRadius: 12,
+                background: "var(--color-accent)",
+                display: "grid",
+                placeItems: "center",
+                boxShadow: "0 0 28px color-mix(in oklch, var(--color-accent) 45%, transparent)",
+              }}>
+                <span style={{ fontFamily: "var(--font-heading)", fontSize: 22, color: "var(--color-accent-ink)", lineHeight: 1 }}>Z</span>
               </div>
+              <p className="font-heading mt-3 text-lg tracking-tight text-[var(--color-text)]">
+                Ask Z2A Anything…
+              </p>
+            </div>
 
-              <div className="mt-5 flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[oklch(10.5%_0.016_96)] px-4 py-3">
-                <span className="flex-1 text-left text-sm text-[var(--color-text-muted)]">
-                  Give me an update on the sales team
-                </span>
-                <button
-                  type="button"
-                  className="grid size-8 place-items-center rounded-lg bg-[var(--color-accent)] text-[var(--color-accent-ink)]"
-                  aria-label="Send"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
-                    <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
-              </div>
-
-              <div className="mt-3 flex items-center gap-1.5 text-xs text-[var(--color-text-faint)]">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                  <path d="M12 5v14M5 12h14" strokeLinecap="round" strokeLinejoin="round" />
+            <div className="mt-5 flex items-center gap-2 rounded-xl border border-[var(--color-border)] bg-[oklch(10.5%_0.016_96)] px-4 py-3">
+              <span className="flex-1 text-left text-sm text-[var(--color-text-muted)]">
+                Give me an update on the sales team
+              </span>
+              <button
+                type="button"
+                className="grid size-8 place-items-center rounded-lg bg-[var(--color-accent)] text-[var(--color-accent-ink)]"
+                aria-label="Send"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                  <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                Add document
-              </div>
+              </button>
+            </div>
 
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
-                {["Analyze", "Generate Content", "Research"].map((action) => (
-                  <span
-                    key={action}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[oklch(10.5%_0.016_96)] px-3 py-1.5 text-xs text-[var(--color-text-muted)]"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                      {action === "Analyze" && (
-                        <path d="M3 3v18h18" strokeLinecap="round" strokeLinejoin="round" />
-                      )}
-                      {action === "Generate Content" && (
-                        <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" strokeLinecap="round" strokeLinejoin="round" />
-                      )}
-                      {action === "Research" && (
-                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" strokeLinecap="round" strokeLinejoin="round" />
-                      )}
-                    </svg>
-                    {action}
-                  </span>
-                ))}
-              </div>
+            <div className="mt-3 flex items-center gap-1.5 text-xs text-[var(--color-text-faint)]">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M12 5v14M5 12h14" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Add document
+            </div>
+
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              {["Analyze", "Generate Content", "Research"].map((action) => (
+                <span
+                  key={action}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--color-border)] bg-[oklch(10.5%_0.016_96)] px-3 py-1.5 text-xs text-[var(--color-text-muted)]"
+                >
+                  {action}
+                </span>
+              ))}
+            </div>
+
+            {/* Mobile chips */}
+            <div className="mt-5 flex flex-col gap-2 lg:hidden">
+              {[...leftChips, ...rightChips].slice(0, 4).map((chip) => (
+                <div
+                  key={chip}
+                  className="rounded-xl border border-[var(--color-border)] bg-[oklch(10.5%_0.016_96)] px-4 py-2.5 text-sm text-left text-[var(--color-text-muted)]"
+                >
+                  {chip}
+                </div>
+              ))}
             </div>
           </motion.div>
+
+          {/* Right chips */}
+          <div className="hidden lg:flex flex-col gap-3 flex-1">
+            {rightChips.map((chip, i) => (
+              <motion.div
+                key={chip}
+                initial={{ opacity: 0, x: 28 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, amount: 0.1 }}
+                transition={{ duration: 0.55, delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 text-sm text-left text-[var(--color-text-muted)] hover:border-[color-mix(in_oklch,var(--color-accent)_30%,var(--color-border))] hover:text-[var(--color-text)] transition-colors duration-200"
+              >
+                {chip}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1330,13 +1226,16 @@ export default function LandingPageV2() {
       <main>
         <Hero />
         <BlurFade delay={0.2}>
-          <AnimatedIntegrations />
-        </BlurFade>
-        <BlurFade delay={0.2}>
           <FeaturesSection />
         </BlurFade>
         <BlurFade delay={0.2}>
+          <Outcomes />
+        </BlurFade>
+        <BlurFade delay={0.2}>
           <DataToWorkSection />
+        </BlurFade>
+        <BlurFade delay={0.2}>
+          <AnimatedIntegrations />
         </BlurFade>
         <BlurFade delay={0.2}>
           <FinalCTA />
