@@ -172,29 +172,68 @@ function StatusBadge({
    NAV
    ═══════════════════════════════════════════════════════════════ */
 
-function HamburgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
+function HamburgerButton({
+  open,
+  onClick,
+  onYellow = false,
+}: {
+  open: boolean;
+  onClick: () => void;
+  onYellow?: boolean;
+}) {
+  const lineColor = onYellow ? "var(--color-accent-ink)" : "var(--color-text)";
   return (
-    <button
-      onClick={onClick}
-      aria-label="Toggle menu"
-      className="relative flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] transition-colors duration-200 hover:border-[color-mix(in_oklch,var(--color-accent)_35%,var(--color-border))]"
-    >
-      <motion.span
-        animate={open ? { rotate: 45, y: 6.5 } : { rotate: 0, y: 0 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
-      />
-      <motion.span
-        animate={open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
-      />
-      <motion.span
-        animate={open ? { rotate: -45, y: -6.5 } : { rotate: 0, y: 0 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
-      />
-    </button>
+    <div className="relative">
+      {/* Accent pulse ring — fires on open */}
+      <AnimatePresence>
+        {open && (
+          <motion.span
+            key="ring"
+            initial={{ scale: 0.85, opacity: 0.7 }}
+            animate={{ scale: 2.6, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.55, ease: "easeOut" }}
+            className="pointer-events-none absolute inset-0 rounded-full"
+            style={{ background: "var(--color-accent)" }}
+          />
+        )}
+      </AnimatePresence>
+
+      <motion.button
+        onClick={onClick}
+        aria-label="Toggle menu"
+        animate={{
+          borderColor: onYellow
+            ? "rgba(0,0,0,0.15)"
+            : open
+            ? "color-mix(in oklch, var(--color-accent) 55%, transparent)"
+            : "var(--color-border)",
+          backgroundColor: onYellow
+            ? "rgba(0,0,0,0.08)"
+            : open
+            ? "color-mix(in oklch, var(--color-accent) 10%, var(--color-surface))"
+            : "var(--color-surface)",
+        }}
+        transition={{ duration: 0.28 }}
+        className="relative flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-full border"
+      >
+        <motion.span
+          animate={{ rotate: open ? 45 : 0, y: open ? 6.5 : 0, backgroundColor: lineColor }}
+          transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+          className="block h-[1.5px] w-[18px] rounded-full"
+        />
+        <motion.span
+          animate={{ opacity: open ? 0 : 1, scaleX: open ? 0 : 1, backgroundColor: lineColor }}
+          transition={{ duration: 0.22 }}
+          className="block h-[1.5px] w-[18px] rounded-full"
+        />
+        <motion.span
+          animate={{ rotate: open ? -45 : 0, y: open ? -6.5 : 0, backgroundColor: lineColor }}
+          transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+          className="block h-[1.5px] w-[18px] rounded-full"
+        />
+      </motion.button>
+    </div>
   );
 }
 
@@ -203,7 +242,7 @@ function LandingNav() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 48);
+    const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -217,132 +256,125 @@ function LandingNav() {
 
   return (
     <>
-      <header
-        className={cn(
-          "sticky top-0 z-50 transition-all duration-[320ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
-          scrolled ? "border-b border-white/[0.05] py-2" : "border-b border-transparent py-4",
-        )}
-        style={{
-          background: scrolled ? "rgba(5, 4, 8, 0.78)" : "transparent",
-          backdropFilter: scrolled ? "blur(18px) saturate(1.4)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(18px) saturate(1.4)" : "none",
-        }}
-      >
-        <div className="mx-auto flex max-w-7xl items-center px-[clamp(16px,3vw,32px)]">
-          {/* Logo */}
-          <a href="#top" className="no-underline shrink-0">
-            <LandingWordmark size={scrolled ? "sm" : "md"} />
-          </a>
+      {/* ── Floating pill nav ── */}
+      <header className="sticky top-4 z-50 pointer-events-none">
+        <div className="mx-auto max-w-[800px] px-4 pointer-events-auto">
+          <motion.div
+            animate={{
+              background: scrolled ? "rgba(6,5,10,0.85)" : "rgba(6,5,10,0.5)",
+              boxShadow: scrolled
+                ? "0 16px 48px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(255,255,255,0.05) inset"
+                : "0 4px 24px rgba(0,0,0,0.3), 0 0 0 0.5px rgba(255,255,255,0.04) inset",
+            }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-2 rounded-full border border-white/[0.07] px-3 py-2"
+            style={{ backdropFilter: "blur(22px) saturate(1.5)", WebkitBackdropFilter: "blur(22px) saturate(1.5)" }}
+          >
+            {/* Logo */}
+            <a href="#top" className="no-underline shrink-0 mr-1">
+              <LandingWordmark size="sm" />
+            </a>
 
-          {/* Desktop centered nav links */}
-          <nav className="hidden lg:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
-            {links.map((l) => (
-              <a
-                key={l}
-                href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
-                className="font-body text-[13px] font-medium px-4 py-2 rounded-full no-underline text-muted-foreground hover:text-foreground hover:bg-white/[0.05] transition-all duration-150"
-              >
-                {l}
-              </a>
-            ))}
-          </nav>
+            {/* Desktop center links */}
+            <nav className="hidden lg:flex flex-1 items-center justify-center gap-0.5">
+              {links.map((l) => (
+                <a
+                  key={l}
+                  href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
+                  className="font-body text-[13px] font-medium px-4 py-1.5 rounded-full no-underline text-muted-foreground hover:text-foreground hover:bg-white/[0.06] transition-all duration-150"
+                >
+                  {l}
+                </a>
+              ))}
+            </nav>
 
-          {/* Right side */}
-          <div className="ml-auto flex items-center gap-3">
-            <Button className={cn(landingPrimaryBtnSm, "hidden lg:flex gap-2")}>
-              Book a Demo →
-            </Button>
-            <HamburgerButton open={menuOpen} onClick={() => setMenuOpen(o => !o)} />
-          </div>
+            {/* Right */}
+            <div className="ml-auto flex items-center gap-2">
+              <Button className={cn(landingPrimaryBtnSm, "hidden lg:flex gap-2")}>
+                Book a Demo →
+              </Button>
+              <HamburgerButton open={menuOpen} onClick={() => setMenuOpen(o => !o)} />
+            </div>
+          </motion.div>
         </div>
       </header>
 
-      {/* ── Fullscreen yellow menu overlay ── */}
+      {/* ── Fullscreen yellow menu — clip-path circle ripple from hamburger ── */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            key="menu"
+            initial={{ clipPath: "circle(24px at calc(100% - 48px) 36px)" }}
+            animate={{ clipPath: "circle(170vmax at calc(100% - 48px) 36px)" }}
+            exit={{ clipPath: "circle(24px at calc(100% - 48px) 36px)" }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[99] flex flex-col overflow-hidden"
             style={{ background: "var(--color-accent)" }}
           >
-            {/* Falling brand orbs (decorative) */}
+            {/* Falling brand orbs */}
             {[
-              { size: 380, x: "68%", topPct: "4%",  delay: 0,    blur: 90 },
-              { size: 220, x: "8%",  topPct: "55%", delay: 0.06, blur: 65 },
-              { size: 160, x: "42%", topPct: "80%", delay: 0.1,  blur: 50 },
-              { size: 130, x: "85%", topPct: "62%", delay: 0.04, blur: 40 },
+              { size: 420, x: "62%", top: "2%",  delay: 0.18, blur: 100 },
+              { size: 240, x: "5%",  top: "52%", delay: 0.24, blur: 70  },
+              { size: 180, x: "38%", top: "76%", delay: 0.28, blur: 55  },
+              { size: 140, x: "82%", top: "60%", delay: 0.2,  blur: 45  },
             ].map((orb, i) => (
               <motion.div
                 key={i}
                 aria-hidden
-                initial={{ y: -(orb.size + 80), opacity: 0 }}
+                initial={{ y: -(orb.size + 120), opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -(orb.size + 80), opacity: 0 }}
+                exit={{ y: -(orb.size + 120), opacity: 0 }}
                 transition={{ duration: 1.1, delay: orb.delay, ease: [0.16, 1, 0.3, 1] }}
                 style={{
                   position: "absolute",
-                  width: orb.size,
-                  height: orb.size,
+                  width: orb.size, height: orb.size,
                   borderRadius: "50%",
-                  left: orb.x,
-                  top: orb.topPct,
-                  background:
-                    "radial-gradient(circle at 32% 28%, rgba(255,232,120,0.95) 0%, rgba(245,197,66,0.85) 40%, rgba(184,134,11,0.65) 100%)",
+                  left: orb.x, top: orb.top,
+                  background: "radial-gradient(circle at 32% 28%, rgba(255,236,130,0.95) 0%, rgba(245,197,66,0.85) 40%, rgba(184,134,11,0.6) 100%)",
                   filter: `blur(${orb.blur}px)`,
                   pointerEvents: "none",
                 }}
               />
             ))}
 
-            {/* Header row inside menu */}
-            <div className="relative z-10 flex items-center justify-between px-[clamp(16px,3vw,32px)] py-4">
+            {/* Top bar inside menu */}
+            <div className="relative z-10 flex items-center justify-between px-[clamp(16px,4vw,40px)] pt-5 pb-2">
               <a href="#top" onClick={() => setMenuOpen(false)} className="no-underline">
                 <LandingWordmark />
               </a>
-              <HamburgerButton open={menuOpen} onClick={() => setMenuOpen(false)} />
+              <HamburgerButton open={true} onClick={() => setMenuOpen(false)} onYellow />
             </div>
 
-            {/* Menu items */}
-            <div className="relative z-10 flex flex-1 flex-col justify-center px-[clamp(24px,6vw,64px)] pb-20">
-              <div className="flex flex-col">
-                {links.map((l, i) => (
-                  <motion.a
-                    key={l}
-                    href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
-                    onClick={() => setMenuOpen(false)}
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 24 }}
-                    transition={{ duration: 0.55, delay: 0.1 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                    className="font-display no-underline leading-[1.05] tracking-tight py-4 border-b border-black/10 hover:border-black/30 hover:pl-2 transition-all duration-200"
-                    style={{
-                      fontSize: "clamp(36px, 7.5vw, 68px)",
-                      color: "var(--color-accent-ink)",
-                    }}
-                  >
-                    {l}
-                  </motion.a>
-                ))}
-              </div>
+            {/* Nav links */}
+            <div className="relative z-10 flex flex-1 flex-col justify-center px-[clamp(28px,6vw,72px)] pb-16 gap-0">
+              {links.map((l, i) => (
+                <motion.a
+                  key={l}
+                  href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
+                  onClick={() => setMenuOpen(false)}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.5, delay: 0.28 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-display no-underline leading-[1.05] tracking-[-0.02em] py-[clamp(10px,2vw,18px)] border-b border-black/10 hover:pl-4 hover:border-black/22 transition-all duration-200"
+                  style={{ fontSize: "clamp(38px,8vw,72px)", color: "var(--color-accent-ink)" }}
+                >
+                  {l}
+                </motion.a>
+              ))}
 
               <motion.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 28 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 12 }}
-                transition={{ duration: 0.5, delay: 0.46 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.45, delay: 0.58 }}
                 className="mt-10"
               >
                 <a
                   href="#pricing"
                   onClick={() => setMenuOpen(false)}
-                  className="inline-flex items-center gap-3 rounded-xl font-body font-semibold no-underline text-[16px] px-7 py-4 transition-transform duration-150 hover:-translate-y-px"
-                  style={{
-                    background: "var(--color-accent-ink)",
-                    color: "var(--color-accent)",
-                  }}
+                  className="inline-flex items-center gap-3 rounded-xl font-body font-semibold no-underline px-7 py-4 text-[16px] transition-transform duration-150 hover:-translate-y-px"
+                  style={{ background: "var(--color-accent-ink)", color: "var(--color-accent)" }}
                 >
                   Book a Demo
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
