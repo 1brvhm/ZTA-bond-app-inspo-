@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -172,17 +172,12 @@ function StatusBadge({
    NAV
    ═══════════════════════════════════════════════════════════════ */
 
-function HamburgerButton({
-  open,
-  onClick,
-}: {
-  open: boolean;
-  onClick: () => void;
-}) {
+function HamburgerButton({ open, onClick }: { open: boolean; onClick: () => void }) {
   return (
     <motion.button
       onClick={onClick}
       aria-label="Toggle menu"
+      whileTap={{ scale: 0.8 }}
       animate={{
         borderColor: open
           ? "color-mix(in oklch, var(--color-accent) 55%, transparent)"
@@ -191,22 +186,22 @@ function HamburgerButton({
           ? "color-mix(in oklch, var(--color-accent) 10%, var(--color-surface))"
           : "var(--color-surface)",
       }}
-      transition={{ duration: 0.28 }}
+      transition={{ duration: 0.25 }}
       className="flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-full border"
     >
       <motion.span
         animate={{ rotate: open ? 45 : 0, y: open ? 6.5 : 0 }}
-        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ type: "spring", stiffness: 320, damping: 24 }}
         className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
       />
       <motion.span
         animate={{ opacity: open ? 0 : 1, scaleX: open ? 0 : 1 }}
-        transition={{ duration: 0.22 }}
+        transition={{ type: "spring", stiffness: 320, damping: 24 }}
         className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
       />
       <motion.span
         animate={{ rotate: open ? -45 : 0, y: open ? -6.5 : 0 }}
-        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ type: "spring", stiffness: 320, damping: 24 }}
         className="block h-[1.5px] w-[18px] rounded-full bg-[var(--color-text)]"
       />
     </motion.button>
@@ -216,6 +211,8 @@ function HamburgerButton({
 function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [clipOrigin, setClipOrigin] = useState("50% 36px");
+  const btnRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -227,6 +224,14 @@ function LandingNav() {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
+
+  const handleOpen = useCallback(() => {
+    if (btnRef.current) {
+      const r = btnRef.current.getBoundingClientRect();
+      setClipOrigin(`${Math.round(r.left + r.width / 2)}px ${Math.round(r.top + r.height / 2)}px`);
+    }
+    setMenuOpen(true);
+  }, []);
 
   const links = ["Why", "How it works", "Outcomes", "Pricing"];
 
@@ -242,136 +247,108 @@ function LandingNav() {
                 ? "0 16px 48px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(255,255,255,0.05) inset"
                 : "0 4px 24px rgba(0,0,0,0.3), 0 0 0 0.5px rgba(255,255,255,0.04) inset",
             }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.35 }}
             className="flex items-center gap-2 rounded-full border border-white/[0.07] px-3 py-2"
             style={{ backdropFilter: "blur(22px) saturate(1.5)", WebkitBackdropFilter: "blur(22px) saturate(1.5)" }}
           >
-            {/* Logo */}
             <a href="#top" className="no-underline shrink-0 mr-1">
               <LandingWordmark size="sm" />
             </a>
-
-            {/* Desktop center links */}
             <nav className="hidden lg:flex flex-1 items-center justify-center gap-0.5">
               {links.map((l) => (
-                <a
-                  key={l}
-                  href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="font-body text-[13px] font-medium px-4 py-1.5 rounded-full no-underline text-muted-foreground hover:text-foreground hover:bg-white/[0.06] transition-all duration-150"
-                >
+                <a key={l} href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
+                  className="font-body text-[13px] font-medium px-4 py-1.5 rounded-full no-underline text-muted-foreground hover:text-foreground hover:bg-white/[0.06] transition-all duration-150">
                   {l}
                 </a>
               ))}
             </nav>
-
-            {/* Right */}
             <div className="ml-auto flex items-center gap-2">
               <Button className={cn(landingPrimaryBtnSm, "hidden lg:flex gap-2")}>
                 Book a Demo →
               </Button>
-              <HamburgerButton open={menuOpen} onClick={() => setMenuOpen(o => !o)} />
+              {/* Wrapper ref captures exact button position for clip-path origin */}
+              <div ref={btnRef}>
+                <HamburgerButton open={menuOpen} onClick={menuOpen ? () => setMenuOpen(false) : handleOpen} />
+              </div>
             </div>
           </motion.div>
         </div>
       </header>
 
-      {/* ── Fullscreen yellow menu — clip-path circle ripple from hamburger ── */}
+      {/* ── Fullscreen yellow menu ── */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             key="menu"
-            initial={{ clipPath: "circle(24px at calc(100% - 48px) 36px)" }}
-            animate={{ clipPath: "circle(170vmax at calc(100% - 48px) 36px)" }}
-            exit={{ clipPath: "circle(24px at calc(100% - 48px) 36px)" }}
-            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ clipPath: `circle(22px at ${clipOrigin})` }}
+            animate={{ clipPath: `circle(170vmax at ${clipOrigin})` }}
+            exit={{ clipPath: `circle(22px at ${clipOrigin})` }}
+            transition={{ duration: 0.52, ease: [0.34, 1.4, 0.64, 1] }}
             className="fixed inset-0 z-[99] flex flex-col overflow-hidden"
             style={{ background: "var(--color-accent)" }}
           >
-            {/* Falling brand orbs */}
+            {/* Soft depth orbs — fade in after menu opens */}
             {[
-              { size: 420, x: "62%", top: "2%",  delay: 0.18, blur: 100 },
-              { size: 240, x: "5%",  top: "52%", delay: 0.24, blur: 70  },
-              { size: 180, x: "38%", top: "76%", delay: 0.28, blur: 55  },
-              { size: 140, x: "82%", top: "60%", delay: 0.2,  blur: 45  },
+              { size: 420, x: "62%", top: "2%",  delay: 0.3, blur: 100 },
+              { size: 240, x: "5%",  top: "52%", delay: 0.35, blur: 70 },
+              { size: 180, x: "38%", top: "76%", delay: 0.38, blur: 55 },
+              { size: 140, x: "82%", top: "60%", delay: 0.32, blur: 45 },
             ].map((orb, i) => (
-              <motion.div
-                key={i}
-                aria-hidden
-                initial={{ y: -(orb.size + 120), opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -(orb.size + 120), opacity: 0 }}
-                transition={{ duration: 1.1, delay: orb.delay, ease: [0.16, 1, 0.3, 1] }}
+              <motion.div key={i} aria-hidden
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, delay: orb.delay }}
                 style={{
-                  position: "absolute",
+                  position: "absolute", borderRadius: "50%",
                   width: orb.size, height: orb.size,
-                  borderRadius: "50%",
                   left: orb.x, top: orb.top,
                   background: "radial-gradient(circle at 32% 28%, rgba(255,236,130,0.95) 0%, rgba(245,197,66,0.85) 40%, rgba(184,134,11,0.6) 100%)",
-                  filter: `blur(${orb.blur}px)`,
-                  pointerEvents: "none",
+                  filter: `blur(${orb.blur}px)`, pointerEvents: "none",
                 }}
               />
             ))}
 
-            {/* Top bar inside menu */}
+            {/* Top bar */}
             <div className="relative z-10 flex items-center justify-between px-[clamp(16px,4vw,40px)] pt-5 pb-2">
               <a href="#top" onClick={() => setMenuOpen(false)} className="no-underline">
                 <BrandWordmark
                   className="gap-3"
-                  textClassName="font-heading text-[22px] leading-none tracking-tight text-[var(--color-accent-ink)]"
+                  textClassName="font-heading text-[22px] leading-none tracking-tight"
                   style={{ color: "var(--color-accent-ink)" }}
                 />
               </a>
-              {/* Plain close button — no stateful animation to leak outside clip-path */}
-              <button
-                onClick={() => setMenuOpen(false)}
-                aria-label="Close menu"
-                className="flex h-9 w-9 items-center justify-center rounded-full transition-colors duration-150"
-                style={{ background: "rgba(0,0,0,0.08)", border: "1px solid rgba(0,0,0,0.12)" }}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-ink)" strokeWidth={2.5} strokeLinecap="round">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
             </div>
 
             {/* Nav links */}
-            <div className="relative z-10 flex flex-1 flex-col justify-center px-[clamp(28px,6vw,72px)] pb-16 gap-0">
+            <div className="relative z-10 flex flex-1 flex-col justify-center px-[clamp(28px,6vw,72px)] pb-16">
               {links.map((l, i) => (
-                <motion.a
-                  key={l}
+                <motion.a key={l}
                   href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
                   onClick={() => setMenuOpen(false)}
-                  initial={{ opacity: 0, y: 40 }}
+                  initial={{ opacity: 0, y: 28 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ duration: 0.5, delay: 0.28 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-display no-underline leading-[1.05] tracking-[-0.02em] py-[clamp(10px,2vw,18px)] border-b border-black/10 hover:pl-4 hover:border-black/22 transition-all duration-200"
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.38, delay: 0.22 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                  className="font-display no-underline leading-[1.05] tracking-[-0.02em] py-[clamp(10px,2vw,18px)] border-b border-black/10 hover:pl-3 hover:border-black/25 transition-all duration-150"
                   style={{ fontSize: "clamp(38px,8vw,72px)", color: "var(--color-accent-ink)" }}
                 >
                   {l}
                 </motion.a>
               ))}
 
-              <motion.div
-                initial={{ opacity: 0, y: 28 }}
-                animate={{ opacity: 1, y: 0 }}
+              {/* Close text option */}
+              <motion.button
+                onClick={() => setMenuOpen(false)}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.45, delay: 0.58 }}
-                className="mt-10"
+                transition={{ duration: 0.3, delay: 0.48 }}
+                className="mt-8 self-start font-body text-[15px] font-semibold tracking-tight flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity duration-150"
+                style={{ color: "var(--color-accent-ink)" }}
               >
-                <a
-                  href="#pricing"
-                  onClick={() => setMenuOpen(false)}
-                  className="inline-flex items-center gap-3 rounded-xl font-body font-semibold no-underline px-7 py-4 text-[16px] transition-transform duration-150 hover:-translate-y-px"
-                  style={{ background: "var(--color-accent-ink)", color: "var(--color-accent)" }}
-                >
-                  Book a Demo
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
-                    <path d="M17 8l4 4m0 0l-4 4m4-4H3" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </a>
-              </motion.div>
+                ← Close
+              </motion.button>
             </div>
           </motion.div>
         )}
