@@ -112,20 +112,20 @@ export function AnimatedIntegrations() {
           </svg>
 
           {/* Center Agent Node */}
-          <div className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-[var(--color-surface)] border border-[color-mix(in_oklch,var(--color-accent)_24%,var(--color-border))] shadow-[0_0_40px_rgba(229,199,0,0.15)] z-10">
-             <div className="h-10 w-10 rounded-full bg-[var(--color-accent)] opacity-20 blur-xl absolute" />
+          <div className="absolute left-1/2 top-1/2 flex h-28 w-28 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-[var(--color-surface)] border border-[color-mix(in_oklch,var(--color-accent)_28%,var(--color-border))] shadow-[0_0_50px_rgba(229,199,0,0.2)] z-10">
+             <div className="h-14 w-14 rounded-full bg-[var(--color-accent)] opacity-20 blur-xl absolute" />
              {/* eslint-disable-next-line @next/next/no-img-element */}
-             <img src="/z2a-mark.svg" alt="Z2A" width={36} height={30} className="relative z-10" />
+             <img src="/z2a-mark.svg" alt="Z2A" width={48} height={40} className="relative z-10" />
           </div>
 
           {/* Left Logos */}
           {LOGOS_LEFT.map((logo) => (
             <div
               key={logo.name}
-              className="absolute left-0 flex h-14 w-14 -translate-y-1/2 -translate-x-1/2 items-center justify-center rounded-xl bg-[var(--color-surface)] border border-border shadow-sm z-10"
+              className="absolute left-0 flex h-16 w-16 -translate-y-1/2 -translate-x-1/2 items-center justify-center rounded-xl bg-[var(--color-surface)] border border-border shadow-md z-10"
               style={{ top: `${logo.y}px` }}
             >
-              <img src={logo.src} alt={logo.name} className="h-7 w-7 opacity-80" style={{ filter: "brightness(0) invert(1)" }} />
+              <img src={logo.src} alt={logo.name} className="h-9 w-9 opacity-90" style={{ filter: "brightness(0) invert(1)" }} />
             </div>
           ))}
 
@@ -133,10 +133,10 @@ export function AnimatedIntegrations() {
           {LOGOS_RIGHT.map((logo) => (
             <div
               key={logo.name}
-              className="absolute right-0 flex h-14 w-14 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-xl bg-[var(--color-surface)] border border-border shadow-sm z-10"
+              className="absolute right-0 flex h-16 w-16 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-xl bg-[var(--color-surface)] border border-border shadow-md z-10"
               style={{ top: `${logo.y}px` }}
             >
-              <img src={logo.src} alt={logo.name} className="h-7 w-7 opacity-80" style={{ filter: "brightness(0) invert(1)" }} />
+              <img src={logo.src} alt={logo.name} className="h-9 w-9 opacity-90" style={{ filter: "brightness(0) invert(1)" }} />
             </div>
           ))}
         </div>

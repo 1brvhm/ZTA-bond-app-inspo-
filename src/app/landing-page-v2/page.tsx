@@ -405,7 +405,7 @@ function Hero() {
         </h1>
 
         <p className="font-body mx-auto mt-6 max-w-[600px] text-[19px] leading-[1.55] text-muted-foreground">
-          No more scattered information. No buried action items. One agent that surfaces what matters — every morning before you start.
+          No more scattered information. No buried action items. One agent that surfaces what matters every morning before you start.
         </p>
 
         <div className="mt-9 flex flex-wrap justify-center gap-3">
@@ -427,7 +427,7 @@ function Hero() {
               />
             </svg>
           </Button>
-          <Button variant="outline" className={cn(landingOutlineBtn, "gap-2.5")}>
+          <Button variant="outline" className={cn(landingOutlineBtn, "gap-2.5")} onClick={() => document.getElementById("why")?.scrollIntoView({ behavior: "smooth" })}>
             See how it works
           </Button>
         </div>
@@ -461,7 +461,6 @@ function SplitShowcase() {
         }}
       >
         <CornerOrnaments />
-        <Eyebrow className="mb-2">Before</Eyebrow>
         <h3 className="font-heading m-0 text-[42px] font-normal tracking-[-0.03em] text-[rgb(247,247,247)]">
           Chaos.
         </h3>
@@ -476,9 +475,6 @@ function SplitShowcase() {
         }}
       >
         <CornerOrnaments accent />
-        <Eyebrow accent className="mb-2">
-          After
-        </Eyebrow>
         <h3 className="font-heading m-0 text-[42px] font-normal tracking-[-0.03em] text-[var(--color-accent)]">
           Handled.
         </h3>
@@ -506,32 +502,32 @@ function ChaosStack() {
       badge: "Inbox 99+",
       img: "/images/chaos-gmail.png",
       objPos: "25% 35%",
-      top: 10, left: "1%", width: 278,
+      top: 0, left: "0%", width: 300,
       rotate: -2, y: yGmail, z: 20,
-      delay: 0,
+      imgH: 185, delay: 0,
     },
     {
       label: "Google Calendar",
       badge: "4 conflicts",
       img: "/images/chaos-gcal.png",
       objPos: "40% 28%",
-      top: 110, left: "24%", width: 305,
+      top: 120, left: "20%", width: 320,
       rotate: 1.8, y: yGcal, z: 30,
-      delay: 0.12,
+      imgH: 200, delay: 0.12,
     },
     {
       label: "Slack",
       badge: "#general",
       img: "/images/chaos-slack.png",
       objPos: "85% 78%",
-      top: 250, left: "7%", width: 270,
+      top: 265, left: "4%", width: 290,
       rotate: -1, y: ySlack, z: 10,
-      delay: 0.24,
+      imgH: 175, delay: 0.24,
     },
   ];
 
   return (
-    <div ref={sectionRef} style={{ position: "relative", height: 540, marginTop: 28 }}>
+    <div ref={sectionRef} style={{ position: "relative", height: 600, marginTop: 20 }}>
       {cards.map((card, i) => (
         /* Outer: one-time entrance slide-up */
         <motion.div
@@ -599,7 +595,7 @@ function ChaosStack() {
                 alt=""
                 style={{
                   width: "100%",
-                  height: 155,
+                  height: card.imgH,
                   objectFit: "cover",
                   objectPosition: card.objPos,
                   filter: "saturate(0.65) brightness(0.78) contrast(1.05)",
@@ -670,15 +666,10 @@ function BriefDashboard() {
             color: "var(--color-accent)",
           }}
         >
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "var(--color-accent)",
-              boxShadow: "0 0 8px var(--color-accent)",
-            }}
-          />
+          <span className="relative flex" style={{ width: 8, height: 8 }}>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60" style={{ background: "var(--color-accent)" }} />
+            <span className="relative inline-flex rounded-full" style={{ width: 8, height: 8, background: "var(--color-accent)", boxShadow: "0 0 10px var(--color-accent)" }} />
+          </span>
           live
         </span>
       </div>
@@ -1099,7 +1090,7 @@ function DataToWorkSection() {
   ];
 
   return (
-    <section id="how-it-works" className="px-[clamp(16px,3vw,32px)] py-24">
+    <section id="how-it-works" className="px-[clamp(16px,3vw,32px)] py-12">
       <div className="mx-auto max-w-7xl">
         <div className="text-center">
           <h2 className="font-heading text-[clamp(36px,4.4vw,56px)] leading-[1.02] font-normal tracking-[-0.025em] text-[var(--color-text)]">
@@ -1266,7 +1257,7 @@ function FinalCTA() {
             Chaos. <span className="text-[var(--color-accent)]">Handled.</span>
           </h2>
           <p className="font-body mx-auto mt-5 max-w-[520px] text-lg leading-[1.55] text-muted-foreground">
-            One weekend. One repeat workflow from your business. A working AI agent running by Monday — and a plan to keep it that way.
+            We&apos;re onboarding a limited group of founders and executives for our final BETA cohort.
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <Button className={cn(landingPrimaryBtn, "gap-2.5")}>
@@ -1292,7 +1283,7 @@ function FinalCTA() {
             </Button>
           </div>
           <p className="font-mono mt-[18px] text-[11px] tracking-[0.16em] text-[var(--color-text-faint)] uppercase">
-            Pilot cohort · spots limited · 100% satisfaction guarantee
+            Spring 2026 cohort · Founders &amp; executives · Applications open
           </p>
 
           {/* Trust badges */}

@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useAnimationFrame, useMotionValue } from "motion/react";
 import { Globe } from "lucide-react";
+import { useRef } from "react";
 
 const LOGOS = [
   { src: "https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/gmail.svg", alt: "Gmail" },
@@ -25,6 +26,50 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
     <p className="font-mono text-[11px] font-medium tracking-[0.18em] uppercase text-[var(--color-accent)]">
       {children}
     </p>
+  );
+}
+
+function AnimatedLogoTrack() {
+  const x = useMotionValue(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const track = [...LOGOS, ...LOGOS, ...LOGOS]; // triple for seamless loop
+
+  useAnimationFrame((_, delta) => {
+    const current = x.get();
+    const itemW = 72; // px per item
+    const totalW = LOGOS.length * itemW;
+    x.set(current - delta * 0.028);
+    if (x.get() <= -totalW) x.set(0);
+  });
+
+  return (
+    <div ref={containerRef} className="mt-8 overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)" }}>
+      <motion.div className="flex gap-3" style={{ x, width: "max-content" }}>
+        {track.map((logo, i) => (
+          <motion.div
+            key={i}
+            whileHover={{ scale: 1.12, rotate: 8 }}
+            transition={{ type: "spring", stiffness: 400, damping: 18 }}
+            className="flex-shrink-0 flex aspect-square w-[60px] items-center justify-center rounded-[12px] cursor-pointer"
+            style={{
+              background: "oklch(12.5% 0.018 96)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.4)",
+            }}
+          >
+            <motion.img
+              src={logo.src}
+              alt={logo.alt}
+              width={28}
+              height={28}
+              className="size-7"
+              style={{ filter: "brightness(0) invert(1)" }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 12 + (i % LOGOS.length) * 3, repeat: Infinity, ease: "linear" }}
+            />
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
   );
 }
 
@@ -173,27 +218,7 @@ export function Features() {
               Gmail, Slack, Notion, Linear, GitHub. Same tools. Your data stays yours — zero training.
             </p>
 
-            <div className="mt-8 grid grid-cols-3 gap-3 md:grid-cols-6">
-              {LOGOS.map((logo) => (
-                <div
-                  key={logo.alt}
-                  className="flex aspect-square items-center justify-center rounded-[12px] p-4"
-                  style={{
-                    background: "oklch(12.5% 0.018 96)",
-                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.4)",
-                  }}
-                >
-                  <img
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={28}
-                    height={28}
-                    className="size-7 opacity-80"
-                    style={{ filter: "brightness(0) invert(1)" }}
-                  />
-                </div>
-              ))}
-            </div>
+            <AnimatedLogoTrack />
           </motion.div>
 
         </div>
