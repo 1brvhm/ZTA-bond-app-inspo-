@@ -56,15 +56,13 @@ function AnimatedLogoTrack() {
               boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.4)",
             }}
           >
-            <motion.img
+            <img
               src={logo.src}
               alt={logo.alt}
               width={28}
               height={28}
               className="size-7"
               style={{ filter: "brightness(0) invert(1)" }}
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 12 + (i % LOGOS.length) * 3, repeat: Infinity, ease: "linear" }}
             />
           </motion.div>
         ))}
