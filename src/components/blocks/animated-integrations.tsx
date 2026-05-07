@@ -18,57 +18,24 @@ const LOGOS_RIGHT = [
 
 const DOT_DURATION = 2.5;
 
-// Glow keyframe: idle → idle → PULSE → fade
-const glowKeyframes = [
-  "0 0 0px 0px rgba(245,197,66,0)",
-  "0 0 0px 0px rgba(245,197,66,0)",
-  "0 0 22px 5px rgba(245,197,66,0.75), 0 0 0 2px rgba(245,197,66,0.55)",
-  "0 0 0px 0px rgba(245,197,66,0)",
-];
-const glowTimes = [0, 0.82, 0.92, 1.0];
-
 function LogoNode({
   logo,
   side,
-  index,
-  isInView,
 }: {
   logo: { name: string; src: string; y: number };
   side: "left" | "right";
   index: number;
   isInView: boolean;
 }) {
-  const dotDelay = side === "left" ? index * 0.8 : index * 0.8 + 0.5;
   const posClass =
     side === "left"
       ? "absolute left-0 -translate-x-1/2"
       : "absolute right-0 translate-x-1/2";
 
   return (
-    <motion.div
-      key={logo.name}
-      className={`${posClass} flex h-16 w-16 -translate-y-1/2 items-center justify-center rounded-xl bg-[var(--color-surface)] border border-border z-10`}
+    <div
+      className={`${posClass} flex h-16 w-16 -translate-y-1/2 items-center justify-center rounded-xl bg-[var(--color-surface)] border border-border shadow-md z-10`}
       style={{ top: `${logo.y}px` }}
-      animate={
-        isInView
-          ? {
-              boxShadow: glowKeyframes,
-              borderColor: [
-                "oklch(21% 0.02 96)",
-                "oklch(21% 0.02 96)",
-                "rgba(245,197,66,0.7)",
-                "oklch(21% 0.02 96)",
-              ],
-            }
-          : { boxShadow: glowKeyframes[0] }
-      }
-      transition={{
-        duration: DOT_DURATION,
-        repeat: Infinity,
-        delay: dotDelay,
-        times: glowTimes,
-        ease: "easeOut",
-      }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -77,7 +44,7 @@ function LogoNode({
         className="h-9 w-9 opacity-90"
         style={{ filter: "brightness(0) invert(1)" }}
       />
-    </motion.div>
+    </div>
   );
 }
 
