@@ -1299,7 +1299,7 @@ function FinalCTA() {
               <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-text-faint)] uppercase">SOC 2 Type 2</span>
             </div>
             <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-[var(--color-surface)] px-4 py-2">
-              <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-text-faint)] uppercase">Your data. Zero training.</span>
+              <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-text-faint)] uppercase">Your Data. ZTA Training.</span>
             </div>
           </div>
         </div>
