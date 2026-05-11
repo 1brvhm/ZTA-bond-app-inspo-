@@ -268,7 +268,7 @@ function LandingNav() {
               ))}
             </nav>
             <div className="ml-auto flex items-center gap-2">
-              <Button className={cn(landingPrimaryBtnSm, "hidden lg:flex gap-2")}>
+              <Button className={cn(landingPrimaryBtnSm, "hidden lg:flex gap-2")} onClick={() => window.open("https://cal.com/kensho/1-1-ai-discovery-call", "_blank")}>
                 Book a Demo →
               </Button>
               {/* Wrapper ref captures exact button position for clip-path origin */}
@@ -376,7 +376,7 @@ function LandingNav() {
 
 function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-20 pb-8">
+    <section id="top" className="relative overflow-hidden pt-16 pb-8 lg:pt-20">
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
           className="absolute -top-[12%] left-[6%] size-[520px] rounded-full blur-[50px] [animation:z2a-drift_26s_ease-in-out_infinite]"
@@ -409,25 +409,13 @@ function Hero() {
         </p>
 
         <div className="mt-9 flex flex-wrap justify-center gap-3">
-          <Button className={cn(landingPrimaryBtn, "gap-2.5")}>
+          <Button className={cn(landingPrimaryBtn, "gap-2.5")} onClick={() => window.open("https://cal.com/kensho/1-1-ai-discovery-call", "_blank")}>
             Book a Demo
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={2.2}
-              aria-hidden
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </Button>
-          <Button variant="outline" className={cn(landingOutlineBtn, "gap-2.5")} onClick={() => document.getElementById("why")?.scrollIntoView({ behavior: "smooth" })}>
+          <Button variant="outline" className={cn(landingOutlineBtn, "gap-2.5")} onClick={() => window.open("https://www.zerotoagent.com/cao-intake", "_blank")}>
             See how it works
           </Button>
         </div>
@@ -451,10 +439,10 @@ function SplitShowcase() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.1, margin: "-100px" }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="grid grid-cols-1 gap-[18px] lg:grid-cols-[1fr_1.25fr]"
+      className="grid grid-cols-1 gap-0 lg:grid-cols-[1fr_1.25fr]"
     >
       <div
-        className="relative min-h-[620px] overflow-hidden rounded-[20px] border border-border p-8"
+        className="relative min-h-[620px] overflow-hidden rounded-t-[20px] rounded-b-none lg:rounded-l-[20px] lg:rounded-r-none lg:rounded-b-[20px] border border-border p-8"
         style={{
           background:
             "radial-gradient(140% 90% at 20% 0%, color-mix(in oklch, var(--color-accent) 6%, oklch(3.5% 0.008 96)) 0%, oklch(3.5% 0.008 96) 65%)",
@@ -468,7 +456,7 @@ function SplitShowcase() {
       </div>
 
       <div
-        className="relative min-h-[620px] overflow-hidden rounded-[20px] border border-[color-mix(in_oklch,var(--color-accent)_28%,var(--color-border))] p-8 shadow-[0_0_0_1px_color-mix(in_oklch,var(--color-accent)_18%,transparent),0_40px_100px_rgba(229,199,0,0.12)]"
+        className="relative min-h-[620px] overflow-hidden rounded-b-[20px] rounded-t-none lg:rounded-r-[20px] lg:rounded-l-none lg:rounded-t-[20px] border border-t-0 lg:border-t lg:border-l-0 border-[color-mix(in_oklch,var(--color-accent)_28%,var(--color-border))] p-8 shadow-[0_0_0_1px_color-mix(in_oklch,var(--color-accent)_18%,transparent),0_40px_100px_rgba(229,199,0,0.12)]"
         style={{
           background:
             "radial-gradient(140% 90% at 30% 0%, color-mix(in oklch, var(--color-accent) 13%, oklch(10.5% 0.016 96)) 0%, oklch(8.5% 0.012 96) 65%)",
@@ -1059,7 +1047,7 @@ function IntegrationsRow() {
 function FeaturesSection() {
   return (
     <div id="why">
-      <div className="mx-auto max-w-7xl px-[clamp(16px,3vw,32px)] pb-4 pt-20 text-center">
+      <div className="mx-auto max-w-7xl px-[clamp(16px,3vw,32px)] pb-4 pt-14 lg:pt-20 text-center">
         <EyebrowRule center>Daily Brief</EyebrowRule>
         <h2 className="font-heading mt-5 text-[clamp(36px,3.6vw,54px)] leading-[1.02] font-normal tracking-[-0.025em] text-[var(--color-text)]">
           You start your day with a Brief{" "}
@@ -1260,25 +1248,13 @@ function FinalCTA() {
             We&apos;re onboarding a limited group of founders and executives for our final BETA cohort.
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <Button className={cn(landingPrimaryBtn, "gap-2.5")}>
+            <Button className={cn(landingPrimaryBtn, "gap-2.5")} onClick={() => window.open("https://cal.com/kensho/1-1-ai-discovery-call", "_blank")}>
               Book a Demo
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.2}
-                aria-hidden
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Button>
-            <Button variant="outline" className={cn(landingOutlineBtn, "gap-2.5")}>
+            <Button variant="outline" className={cn(landingOutlineBtn, "gap-2.5")} onClick={() => window.open("https://cal.com/kensho/1-1-ai-discovery-call", "_blank")}>
               Learn more
             </Button>
           </div>
@@ -1286,22 +1262,6 @@ function FinalCTA() {
             Spring 2026 cohort · Founders &amp; executives · Applications open
           </p>
 
-          {/* Trust badges */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-[var(--color-surface)] px-4 py-2">
-              <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-text-faint)] uppercase">Backed by</span>
-              <span className="font-heading text-sm font-medium text-[var(--color-text)]">Y Combinator</span>
-            </div>
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-[var(--color-surface)] px-4 py-2">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="text-[var(--color-accent)]">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-text-faint)] uppercase">SOC 2 Type 2</span>
-            </div>
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-[var(--color-surface)] px-4 py-2">
-              <span className="font-mono text-[10px] tracking-[0.14em] text-[var(--color-text-faint)] uppercase">Your Data. ZTA Training.</span>
-            </div>
-          </div>
         </div>
       </motion.div>
     </section>

@@ -95,7 +95,7 @@ export function Features() {
                 className="font-body mt-2 max-w-sm text-sm leading-[1.6]"
                 style={{ color: "var(--color-text-muted)" }}
               >
-                Your agent runs overnight — reads Slack, Gmail, and Linear, then surfaces what actually
+                Your agent runs overnight, reads Slack, Gmail, and Linear, then surfaces what actually
                 needs you. What You Need to Know. Who&apos;s Waiting on You. What You Need to Do.
               </p>
             </div>
@@ -132,7 +132,7 @@ export function Features() {
                 className="font-heading mt-3 text-[17px] leading-[1.3] tracking-[-0.01em]"
                 style={{ color: "var(--color-text)" }}
               >
-                Ask Z2A Anything. Get answers from everywhere you work.
+                Ask your Chief Agent Officer anything.
               </h3>
             </div>
 
