@@ -403,11 +403,11 @@ function Hero() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 mx-auto max-w-7xl px-[clamp(16px,3vw,28px)] text-center"
       >
-        <h1 className="font-display m-0 text-[clamp(48px,7.4vw,96px)] leading-[0.96] font-normal tracking-[-0.035em] text-[var(--color-text)]">
+        <h1 className="font-display m-0 text-[clamp(34px,7.4vw,96px)] leading-[0.96] font-normal tracking-[-0.035em] text-[var(--color-text)]">
           Your AI <span className="text-[var(--color-accent)]">Chief of Staff.</span>
         </h1>
 
-        <p className="font-body mx-auto mt-6 max-w-[600px] text-[19px] leading-[1.55] text-muted-foreground">
+        <p className="font-body mx-auto mt-5 max-w-[600px] text-[15px] md:text-[19px] leading-[1.6] text-muted-foreground">
           No more scattered information. No buried action items. One agent that surfaces what matters every morning before you start.
         </p>
 

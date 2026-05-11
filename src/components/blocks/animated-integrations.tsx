@@ -60,7 +60,18 @@ export function AnimatedIntegrations() {
           No new apps. <span className="text-[var(--color-accent)]">No new tabs.</span>
         </h2>
 
-        <div ref={containerRef} className="relative mx-auto mt-16 h-[400px] w-full max-w-[800px]">
+        {/* Mobile: simple logo grid (animated diagram breaks at narrow widths) */}
+        <div className="sm:hidden mt-10 grid grid-cols-3 gap-4 max-w-[280px] mx-auto">
+          {[...LOGOS_LEFT, ...LOGOS_RIGHT].map((logo) => (
+            <div key={logo.name} className="flex h-14 w-14 mx-auto items-center justify-center rounded-xl bg-[var(--color-surface)] border border-border shadow-sm">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={logo.src} alt={logo.name} className="h-7 w-7 opacity-90" style={{ filter: "brightness(0) invert(1)" }} />
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: full animated diagram */}
+        <div ref={containerRef} className="hidden sm:block relative mx-auto mt-16 h-[400px] w-full max-w-[800px]">
           {/* SVG paths + dots */}
           <svg
             viewBox="0 0 800 400"
@@ -152,6 +163,7 @@ export function AnimatedIntegrations() {
             <LogoNode key={logo.name} logo={logo} side="right" index={i} isInView={isInView} />
           ))}
         </div>
+        {/* /desktop diagram */}
       </div>
     </section>
   );
