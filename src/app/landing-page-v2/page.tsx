@@ -285,12 +285,17 @@ function LandingNav() {
         {menuOpen && (
           <motion.div
             key="menu"
-            initial={{ clipPath: `circle(22px at ${clipOrigin})` }}
-            animate={{ clipPath: `circle(170vmax at ${clipOrigin})` }}
-            exit={{ clipPath: `circle(22px at ${clipOrigin})` }}
+            variants={{
+              hidden:  { clipPath: `circle(22px at ${clipOrigin})`, opacity: 1 },
+              visible: { clipPath: `circle(170vmax at ${clipOrigin})`, opacity: 1 },
+              out:     { opacity: 0 },
+            }}
+            initial="hidden"
+            animate="visible"
+            exit="out"
             transition={{ duration: 0.52, ease: [0.34, 1.4, 0.64, 1] }}
-            className="fixed inset-0 z-[99] flex flex-col overflow-hidden"
             style={{ background: "var(--color-accent)" }}
+            className="fixed inset-0 z-[99] flex flex-col overflow-hidden"
           >
             {/* Soft depth orbs — fade in after menu opens */}
             {[
@@ -323,6 +328,16 @@ function LandingNav() {
                   style={{ color: "var(--color-accent-ink)" }}
                 />
               </a>
+              <button
+                onClick={() => setMenuOpen(false)}
+                aria-label="Close menu"
+                className="flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-150 hover:bg-black/10"
+                style={{ border: "1.5px solid rgba(0,0,0,0.18)" }}
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-ink)" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
             </div>
 
             {/* Nav links */}
@@ -350,18 +365,6 @@ function LandingNav() {
                 </motion.a>
               ))}
 
-              {/* Close text option */}
-              <motion.button
-                onClick={() => setMenuOpen(false)}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3, delay: 0.48 }}
-                className="mt-8 self-start font-body text-[15px] font-semibold tracking-tight flex items-center gap-2 opacity-60 hover:opacity-100 transition-opacity duration-150"
-                style={{ color: "var(--color-accent-ink)" }}
-              >
-                ← Close
-              </motion.button>
             </div>
           </motion.div>
         )}
